@@ -48,8 +48,10 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Remove this line if you do not have this folder
+# Copy public and create media directory for uploads
 COPY --from=builder /app/public ./public
+RUN mkdir -p ./media
+RUN chown -R nextjs:nodejs ./media
 
 # Set the correct permission for prerender cache
 RUN mkdir .next
@@ -64,8 +66,9 @@ USER nextjs
 
 EXPOSE 3000
 
-ENV PORT 3000
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD HOSTNAME="0.0.0.0" node server.js
+CMD ["node", "server.js"]
