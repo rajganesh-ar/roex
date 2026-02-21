@@ -4,8 +4,8 @@ import { unstable_cache } from 'next/cache'
 import HomePage from './HomePageClient'
 import type { BlogPostData } from './HomePageClient'
 
-// Revalidate every 60 seconds (ISR)
-export const revalidate = 60
+// Force dynamic - DB only reachable at runtime (Railway internal network)
+export const dynamic = 'force-dynamic'
 
 const getHomePageData = unstable_cache(
   async () => {

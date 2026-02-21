@@ -1,13 +1,12 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { unstable_cache } from 'next/cache'
 import { TemplateClient } from './TemplateClient'
 
-// Revalidate layout data every 5 minutes
-export const revalidate = 300
+// Force dynamic rendering - DB (Railway internal) is only reachable at runtime, not build time
+export const dynamic = 'force-dynamic'
 
-const getHeaderData = unstable_cache(
-  async () => {
+const getHeaderData = async () => {
+  try {
     const payload = await getPayload({ config })
     const [menuResult, categoriesResult, featuredResult] = await Promise.all([
       payload
@@ -36,10 +35,14 @@ const getHeaderData = unstable_cache(
         .catch(() => ({ docs: [] as any[] })),
     ])
     return { menuResult, categoriesResult, featuredResult }
-  },
-  ['header-data'],
-  { revalidate: 300 },
-)
+  } catch {
+    return {
+      menuResult: { docs: [] as any[] },
+      categoriesResult: { docs: [] as any[] },
+      featuredResult: { docs: [] as any[] },
+    }
+  }
+}
 
 export default async function Template({ children }: { children: React.ReactNode }) {
   const { menuResult, categoriesResult, featuredResult } = await getHeaderData()

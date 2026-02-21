@@ -2,7 +2,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import BlogPageClient from './BlogPageClient'
 
-export const revalidate = 120
+export const dynamic = 'force-dynamic'
 
 const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
   technology: '/images/SMARTAudio-App-retuschiert.avif',

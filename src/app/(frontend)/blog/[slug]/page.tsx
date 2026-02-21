@@ -3,7 +3,7 @@ import config from '@payload-config'
 import { notFound } from 'next/navigation'
 import BlogPostClient from './BlogPostClient'
 
-export const revalidate = 120
+export const dynamic = 'force-dynamic'
 
 const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
   technology: '/images/SMARTAudio-App-retuschiert.avif',
