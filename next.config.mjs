@@ -2,8 +2,6 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-
   // Performance optimizations
   reactStrictMode: true,
   poweredByHeader: false,
