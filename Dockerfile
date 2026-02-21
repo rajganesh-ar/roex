@@ -46,9 +46,9 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy public and media files
+# Copy public and media files (media may not exist in git — create dir as fallback)
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/media ./media
+RUN mkdir -p ./media
 RUN chown -R nextjs:nodejs ./media
 
 # Set the correct permission for prerender cache
