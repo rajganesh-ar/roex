@@ -1,83 +1,165 @@
-'use client'
+import { getPayload } from 'payload'
+import config from '@payload-config'
+import { unstable_cache } from 'next/cache'
+import HomePage from './HomePageClient'
+import type { BlogPostData } from './HomePageClient'
 
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import ShaderBackground from '@/components/ui/shader-background'
-import './globals.css'
+// Revalidate every 60 seconds (ISR)
+export const revalidate = 60
 
-export default function HomePage() {
+const getHomePageData = unstable_cache(
+  async () => {
+    const payload = await getPayload({ config })
+    const [productsResult, categoriesResult, blogResult, heroResult] = await Promise.all([
+      payload
+        .find({ collection: 'products', sort: '-featured', limit: 8, depth: 1 })
+        .catch(() => ({ docs: [] as any[] })),
+      payload
+        .find({
+          collection: 'categories',
+          limit: 100,
+          depth: 1,
+          select: { name: true, slug: true, image: true },
+        })
+        .catch(() => ({ docs: [] as any[] })),
+      payload
+        .find({
+          collection: 'blog-posts',
+          where: { status: { equals: 'published' } },
+          sort: '-publishedDate',
+          limit: 3,
+          depth: 1,
+        })
+        .catch(() => ({ docs: [] as any[] })),
+      payload
+        .find({
+          collection: 'hero-sections',
+          where: { active: { equals: true } },
+          depth: 1,
+          limit: 10,
+        })
+        .catch(() => ({ docs: [] as any[] })),
+    ])
+    return { productsResult, categoriesResult, blogResult, heroResult }
+  },
+  ['home-page-data'],
+  { revalidate: 60 },
+)
+
+export default async function HomePageServer() {
+  const { productsResult, categoriesResult, blogResult, heroResult } = await getHomePageData()
+
+  // Transform products to match client expected format
+  const products = productsResult.docs.map((product: any) => ({
+    id: String(product.id),
+    name: product.name,
+    slug: product.slug,
+    availability: (product.availability as 'available' | 'unavailable') || 'available',
+    category:
+      Array.isArray(product.categories) && product.categories.length > 0
+        ? typeof product.categories[0] === 'object'
+          ? product.categories[0].name
+          : product.categories[0]
+        : '',
+    image:
+      product.images?.[0]?.image?.url ||
+      (product.images?.[0]?.image?.filename
+        ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${product.images[0].image.filename}`
+        : '/images/category-card-speaker.avif'),
+  }))
+
+  // Transform categories
+  const categories = categoriesResult.docs.map((cat: any) => ({
+    id: String(cat.id),
+    name: cat.name,
+    slug: cat.slug,
+    image:
+      cat.image?.url ||
+      (cat.image?.filename
+        ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${cat.image.filename}`
+        : undefined),
+  }))
+
+  // Transform blog posts
+  const blogPosts: BlogPostData[] = blogResult.docs.map((post: any) => ({
+    image:
+      post.featuredImage?.url ||
+      (post.featuredImage?.filename
+        ? `/media/${post.featuredImage.filename}`
+        : '/images/hero-background-2.avif'),
+    category:
+      post.category?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) ||
+      'General',
+    title: post.title,
+    excerpt: post.excerpt || '',
+    date: post.publishedDate
+      ? new Date(post.publishedDate).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        })
+      : '',
+    readTime: post.readTime ? `${post.readTime} min read` : '',
+    slug: post.slug,
+  }))
+
+  // Transform hero sections
+  const heroSlides = heroResult.docs
+    .filter((hero: any) => {
+      // Only include hero sections that have actual media
+      if (hero.mediaType === 'image' && hero.backgroundImage) return true
+      if (hero.mediaType === 'video' && (hero.backgroundVideo || hero.backgroundVideoUrl))
+        return true
+      return false
+    })
+    .map((hero: any) => {
+      let image = '/images/hero-background-1.avif'
+      let video: string | null = null
+
+      if (hero.mediaType === 'image' && hero.backgroundImage) {
+        image =
+          hero.backgroundImage?.url ||
+          (hero.backgroundImage?.filename
+            ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${hero.backgroundImage.filename}`
+            : '/images/hero-background-1.avif')
+      } else if (hero.mediaType === 'video') {
+        // Get video URL from uploaded file or external URL
+        if (hero.backgroundVideo?.url) {
+          video = hero.backgroundVideo.url
+        } else if (hero.backgroundVideo?.filename) {
+          video = `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${hero.backgroundVideo.filename}`
+        } else if (hero.backgroundVideoUrl) {
+          video = hero.backgroundVideoUrl
+        }
+        // Also get a poster image if backgroundImage is set
+        if (hero.backgroundImage) {
+          image =
+            hero.backgroundImage?.url ||
+            (hero.backgroundImage?.filename
+              ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${hero.backgroundImage.filename}`
+              : '/images/hero-background-1.avif')
+        }
+      }
+
+      return {
+        image,
+        video,
+        mediaType: (hero.mediaType as 'image' | 'video') || 'image',
+        title: hero.title || '',
+        subtitle: hero.subtitle || '',
+        cta: {
+          label: hero.ctaButtons?.[0]?.label || 'DISCOVER MORE',
+          href: hero.ctaButtons?.[0]?.link || '/shop',
+        },
+      }
+    })
+
   return (
-    <div className="relative min-h-screen bg-black flex items-center justify-center overflow-hidden">
-      {/* Shader Background */}
-      <ShaderBackground />
-      
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50 pointer-events-none" style={{ zIndex: 1 }} />
-      
-      {/* Content */}
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-        {/* Logo */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
-        >
-          {/* Replace this with your SVG logo */}
-          <div className="w-48 h-48 md:w-64 md:h-64 mx-auto mb-8">
-            {/* Uncomment when you add your logo to /public/logo.svg */}
-            { <Image
-              src="/logo.svg"
-              alt="Roex Logo"
-              width={256}
-              height={256}
-              className="w-full h-full"
-              priority
-            /> }
-            
-            
-          </div>
-        </motion.div>
-
-        {/* Coming Soon Text */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <h2 className="font-poppins text-4xl md:text-6xl font-semibold text-white mb-6 drop-shadow-lg tracking-tight">
-            Coming Soon
-          </h2>
-          <p className="font-inter text-lg md:text-xl text-white/90 max-w-lg mx-auto drop-shadow-lg leading-relaxed font-light">
-            Something extraordinary is on the horizon. Stay tuned for the future of innovation.
-          </p>
-        </motion.div>
-
-        {/* Animated Dots */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.6 }}
-          className="mt-12 flex justify-center gap-3"
-        >
-          {[0, 0.2, 0.4].map((delay, i) => (
-            <motion.div
-              key={i}
-              animate={{
-                scale: [1, 1.3, 1],
-                opacity: [0.5, 1, 0.5],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay,
-              }}
-              className="w-3 h-3 rounded-full bg-white/60"
-            />
-          ))}
-        </motion.div>
-      </div>
-    </div>
+    <HomePage
+      initialProducts={products}
+      initialCategories={categories}
+      initialBlogPosts={blogPosts}
+      initialHeroSlides={heroSlides.length > 0 ? heroSlides : undefined}
+    />
   )
 }

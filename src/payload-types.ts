@@ -70,18 +70,42 @@ export interface Config {
     users: User;
     media: Media;
     categories: Category;
+    colors: Color;
+    sizes: Size;
+    tags: Tag;
+    'specification-definitions': SpecificationDefinition;
     products: Product;
+    pages: Page;
+    'hero-sections': HeroSection;
+    'menu-items': MenuItem;
+    'blog-categories': BlogCategory;
+    'blog-tags': BlogTag;
+    'blog-posts': BlogPost;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    categories: {
+      children: 'categories';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    colors: ColorsSelect<false> | ColorsSelect<true>;
+    sizes: SizesSelect<false> | SizesSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
+    'specification-definitions': SpecificationDefinitionsSelect<false> | SpecificationDefinitionsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    'hero-sections': HeroSectionsSelect<false> | HeroSectionsSelect<true>;
+    'menu-items': MenuItemsSelect<false> | MenuItemsSelect<true>;
+    'blog-categories': BlogCategoriesSelect<false> | BlogCategoriesSelect<true>;
+    'blog-tags': BlogTagsSelect<false> | BlogTagsSelect<true>;
+    'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -149,7 +173,14 @@ export interface User {
  */
 export interface Media {
   id: number;
+  /**
+   * Descriptive alt text for accessibility and SEO
+   */
   alt: string;
+  /**
+   * Optional caption displayed below the media
+   */
+  caption?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -169,8 +200,95 @@ export interface Media {
 export interface Category {
   id: number;
   name: string;
+  /**
+   * Auto-generated from name. Override manually if needed.
+   */
   slug: string;
+  /**
+   * Parent category – leave empty for top-level categories. Set a parent to make this a subcategory.
+   */
+  parent?: (number | null) | Category;
+  /**
+   * Subcategories under this category
+   */
+  children?: {
+    docs?: (number | Category)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   description?: string | null;
+  /**
+   * Category icon or image
+   */
+  image?: (number | null) | Media;
+  /**
+   * Featured categories appear on the homepage
+   */
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "colors".
+ */
+export interface Color {
+  id: number;
+  name: string;
+  /**
+   * e.g. #000000
+   */
+  hex?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sizes".
+ */
+export interface Size {
+  id: number;
+  /**
+   * Display label (e.g. "Large", "1.5m")
+   */
+  label: string;
+  /**
+   * Machine-readable value (e.g. "lg", "1.5m")
+   */
+  value: string;
+  /**
+   * Controls display ordering
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  name: string;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "specification-definitions".
+ */
+export interface SpecificationDefinition {
+  id: number;
+  /**
+   * e.g. "Frequency Response", "Weight", "Impedance"
+   */
+  label: string;
+  /**
+   * e.g. "Hz", "kg", "Ohm"
+   */
+  unit?: string | null;
+  group?: ('general' | 'electrical' | 'physical' | 'performance') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -181,10 +299,668 @@ export interface Category {
 export interface Product {
   id: number;
   name: string;
+  /**
+   * Auto-generated from name. Override manually if needed.
+   */
   slug: string;
-  price: number;
+  description: string;
+  longDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Unavailable products show a "Coming Soon" tag
+   */
+  availability: 'available' | 'unavailable';
+  /**
+   * Assign one or more categories
+   */
+  categories?: (number | Category)[] | null;
+  /**
+   * Assign tags for filtering & search
+   */
+  tags?: (number | Tag)[] | null;
+  /**
+   * Drag to reorder. First image is the hero.
+   */
+  images: {
+    image: number | Media;
+    /**
+     * Accessibility alt text – overrides the media alt if provided
+     */
+    alt?: string | null;
+    caption?: string | null;
+    id?: string | null;
+  }[];
+  sku?: string | null;
+  /**
+   * Add colour/size combinations
+   */
+  variants?:
+    | {
+        sku: string;
+        color?: (number | null) | Color;
+        size?: (number | null) | Size;
+        variantImages?:
+          | {
+              image: number | Media;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Show on homepage featured section
+   */
+  featured?: boolean | null;
+  /**
+   * Flag as a new arrival
+   */
+  newArrival?: boolean | null;
+  /**
+   * Flag as a best seller
+   */
+  bestSeller?: boolean | null;
+  /**
+   * Uncheck to hide the product without deleting it
+   */
+  active?: boolean | null;
+  /**
+   * Scheduled release date
+   */
+  publishDate?: string | null;
+  /**
+   * Add standardised specifications using predefined definitions
+   */
+  specifications?:
+    | {
+        /**
+         * Pick a spec type (e.g. "Weight", "Impedance")
+         */
+        definition?: (number | null) | SpecificationDefinition;
+        /**
+         * Specification label (auto-filled from definition if linked)
+         */
+        label?: string | null;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Attach PDFs, manuals, spec sheets, etc.
+   */
+  documents?:
+    | {
+        title: string;
+        file: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  seo?: {
+    /**
+     * Falls back to product name if blank
+     */
+    metaTitle?: string | null;
+    /**
+     * Falls back to product description if blank
+     */
+    metaDescription?: string | null;
+    /**
+     * Social share / OG image
+     */
+    metaImage?: (number | null) | Media;
+    /**
+     * Comma-separated keywords
+     */
+    keywords?: string | null;
+  };
+  /**
+   * Original URL if imported from an external website
+   */
+  sourceUrl?: string | null;
+  /**
+   * Auto-populated
+   */
+  createdBy?: (number | null) | User;
+  /**
+   * Auto-populated
+   */
+  updatedBy?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  /**
+   * URL path for this page (e.g., "about", "contact")
+   */
+  slug: string;
+  pageType: 'home' | 'about' | 'contact' | 'shop' | 'custom';
+  /**
+   * Hero section at the top of the page
+   */
+  hero?: {
+    heading?: string | null;
+    subheading?: string | null;
+    backgroundImage?: (number | null) | Media;
+    /**
+     * Video URL (mp4)
+     */
+    backgroundVideo?: string | null;
+    mediaType?: ('image' | 'video' | 'shader') | null;
+    overlayOpacity?: number | null;
+    ctaButtons?:
+      | {
+          label: string;
+          link: string;
+          style?: ('primary' | 'outline') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Hero carousel slides (homepage)
+   */
+  heroSlides?:
+    | {
+        image?: (number | null) | Media;
+        /**
+         * External image URL (fallback)
+         */
+        imageUrl?: string | null;
+        title: string;
+        subtitle?: string | null;
+        ctaLabel?: string | null;
+        ctaLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  sections?:
+    | {
+        sectionType:
+          | 'hero'
+          | 'featured-products'
+          | 'product-carousel'
+          | 'categories'
+          | 'content'
+          | 'gallery'
+          | 'contact-form'
+          | 'stats'
+          | 'testimonials'
+          | 'inspiration'
+          | 'shader'
+          | 'video'
+          | 'newsletter'
+          | 'full-width-image'
+          | 'two-col-text'
+          | 'benefits'
+          | 'team'
+          | 'timeline'
+          | 'faq'
+          | 'cta-banner';
+        heading?: string | null;
+        subheading?: string | null;
+        /**
+         * Small label above the heading
+         */
+        label?: string | null;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Plain text content
+         */
+        bodyText?: string | null;
+        /**
+         * Secondary paragraph text
+         */
+        secondaryText?: string | null;
+        image?: (number | null) | Media;
+        /**
+         * External image URL
+         */
+        imageUrl?: string | null;
+        images?:
+          | {
+              image?: (number | null) | Media;
+              imageUrl?: string | null;
+              caption?: string | null;
+              title?: string | null;
+              subtitle?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        buttonText?: string | null;
+        buttonLink?: string | null;
+        backgroundColor?: ('white' | 'gray' | 'black') | null;
+        stats?:
+          | {
+              value: string;
+              label: string;
+              id?: string | null;
+            }[]
+          | null;
+        testimonials?:
+          | {
+              quote: string;
+              author: string;
+              role?: string | null;
+              rating?: number | null;
+              id?: string | null;
+            }[]
+          | null;
+        benefits?:
+          | {
+              icon?: ('truck' | 'return' | 'shield' | 'headphones' | 'star') | null;
+              title: string;
+              description: string;
+              id?: string | null;
+            }[]
+          | null;
+        teamMembers?:
+          | {
+              name: string;
+              role?: string | null;
+              photo?: (number | null) | Media;
+              photoUrl?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        milestones?:
+          | {
+              year: string;
+              event: string;
+              id?: string | null;
+            }[]
+          | null;
+        faqItems?:
+          | {
+              question: string;
+              answer: string;
+              id?: string | null;
+            }[]
+          | null;
+        inspirationItems?:
+          | {
+              image?: (number | null) | Media;
+              imageUrl?: string | null;
+              title?: string | null;
+              subtitle?: string | null;
+              link?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Video URL or embed
+         */
+        videoUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  seo?: {
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+    metaImage?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Manage hero sections with video/image backgrounds
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-sections".
+ */
+export interface HeroSection {
+  id: number;
+  title: string;
+  subtitle?: string | null;
+  mediaType: 'image' | 'video';
+  backgroundImage?: (number | null) | Media;
+  /**
+   * Upload an mp4 or webm video file
+   */
+  backgroundVideo?: (number | null) | Media;
+  /**
+   * Or paste an external video URL instead of uploading
+   */
+  backgroundVideoUrl?: string | null;
+  /**
+   * Overlay darkness (0-100)
+   */
+  overlayOpacity?: number | null;
+  textAlignment?: ('left' | 'center' | 'right') | null;
+  ctaButtons?:
+    | {
+        label: string;
+        link: string;
+        style?: ('primary' | 'secondary' | 'outline') | null;
+        id?: string | null;
+      }[]
+    | null;
+  height?: ('full' | 'large' | 'medium') | null;
+  active?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Define navigation menu structure
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu-items".
+ */
+export interface MenuItem {
+  id: number;
+  label: string;
+  /**
+   * Leave empty for dropdown menus
+   */
+  link?: string | null;
+  order: number;
+  /**
+   * Enable full-width mega menu dropdown
+   */
+  megaMenu?: boolean | null;
+  columns?:
+    | {
+        title?: string | null;
+        links?:
+          | {
+              label: string;
+              url: string;
+              description?: string | null;
+              image?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  simpleDropdown?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  featured?: {
+    title?: string | null;
+    image?: (number | null) | Media;
+    link?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Categories for organizing blog posts
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-categories".
+ */
+export interface BlogCategory {
+  id: number;
+  name: string;
+  /**
+   * Auto-generated from name if left blank
+   */
+  slug: string;
+  /**
+   * Brief description of this category
+   */
   description?: string | null;
-  category?: (number | null) | Category;
+  /**
+   * Category cover image
+   */
+  image?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Tags for blog post taxonomy and filtering
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-tags".
+ */
+export interface BlogTag {
+  id: number;
+  name: string;
+  /**
+   * Auto-generated from name if left blank
+   */
+  slug: string;
+  /**
+   * Optional hex color for tag badge (e.g. #3B82F6)
+   */
+  color?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Blog posts with rich content, taxonomy, SEO, and scheduling
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-posts".
+ */
+export interface BlogPost {
+  id: number;
+  title: string;
+  /**
+   * Auto-generated from title if left blank
+   */
+  slug?: string | null;
+  /**
+   * Short summary for cards and SEO (max 300 chars)
+   */
+  excerpt?: string | null;
+  /**
+   * Primary hero image for the post
+   */
+  featuredImage: number | Media;
+  /**
+   * Additional images/videos for the post
+   */
+  gallery?:
+    | {
+        media: number | Media;
+        /**
+         * Overrides the media alt text if provided
+         */
+        alt?: string | null;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Add modular content sections
+   */
+  layout?:
+    | (
+        | {
+            text: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'textBlock';
+          }
+        | {
+            image: number | Media;
+            caption?: string | null;
+            size?: ('full' | 'half' | 'third') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'imageBlock';
+          }
+        | {
+            /**
+             * Upload a video file (mp4, webm)
+             */
+            video?: (number | null) | Media;
+            /**
+             * Or provide a direct video URL
+             */
+            externalUrl?: string | null;
+            caption?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'videoBlock';
+          }
+        | {
+            quoteText: string;
+            /**
+             * Person or source of the quote
+             */
+            attribution?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'quoteBlock';
+          }
+        | {
+            /**
+             * YouTube, Vimeo, or other embed URL
+             */
+            embedUrl: string;
+            caption?: string | null;
+            aspectRatio?: ('16:9' | '4:3' | '1:1') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'embedBlock';
+          }
+      )[]
+    | null;
+  /**
+   * Post author
+   */
+  author: number | User;
+  /**
+   * Assign one or more blog categories
+   */
+  categories?: (number | BlogCategory)[] | null;
+  /**
+   * Tags for filtering and discovery
+   */
+  tags?: (number | BlogTag)[] | null;
+  /**
+   * Related posts shown at the end for further reading
+   */
+  relatedPosts?: (number | BlogPost)[] | null;
+  /**
+   * Publication status
+   */
+  status: 'draft' | 'published' | 'scheduled';
+  /**
+   * Date the post was/will be published
+   */
+  publishedDate?: string | null;
+  /**
+   * Set a future date to auto-publish
+   */
+  scheduledPublishDate?: string | null;
+  /**
+   * Auto-calculated reading time (minutes)
+   */
+  readingTime?: number | null;
+  /**
+   * Total page views
+   */
+  viewCount?: number | null;
+  /**
+   * Allow reader comments on this post
+   */
+  allowComments?: boolean | null;
+  /**
+   * Featured posts appear prominently on homepage
+   */
+  featured?: boolean | null;
+  /**
+   * Search engine and social media controls
+   */
+  seo?: {
+    /**
+     * Override the page title for search engines (max 70 chars)
+     */
+    metaTitle?: string | null;
+    /**
+     * Meta description for search results (max 160 chars)
+     */
+    metaDescription?: string | null;
+    /**
+     * Open Graph / social preview image
+     */
+    metaImage?: (number | null) | Media;
+    /**
+     * Override canonical URL if cross-posting
+     */
+    canonicalURL?: string | null;
+    /**
+     * Comma-separated keywords for meta tag
+     */
+    keywords?: string | null;
+  };
+  /**
+   * User who created this post
+   */
+  createdBy?: (number | null) | User;
+  /**
+   * User who last updated this post
+   */
+  updatedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -225,8 +1001,48 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
+        relationTo: 'colors';
+        value: number | Color;
+      } | null)
+    | ({
+        relationTo: 'sizes';
+        value: number | Size;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: number | Tag;
+      } | null)
+    | ({
+        relationTo: 'specification-definitions';
+        value: number | SpecificationDefinition;
+      } | null)
+    | ({
         relationTo: 'products';
         value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'hero-sections';
+        value: number | HeroSection;
+      } | null)
+    | ({
+        relationTo: 'menu-items';
+        value: number | MenuItem;
+      } | null)
+    | ({
+        relationTo: 'blog-categories';
+        value: number | BlogCategory;
+      } | null)
+    | ({
+        relationTo: 'blog-tags';
+        value: number | BlogTag;
+      } | null)
+    | ({
+        relationTo: 'blog-posts';
+        value: number | BlogPost;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -298,6 +1114,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  caption?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -317,7 +1134,53 @@ export interface MediaSelect<T extends boolean = true> {
 export interface CategoriesSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
+  parent?: T;
+  children?: T;
   description?: T;
+  image?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "colors_select".
+ */
+export interface ColorsSelect<T extends boolean = true> {
+  name?: T;
+  hex?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sizes_select".
+ */
+export interface SizesSelect<T extends boolean = true> {
+  label?: T;
+  value?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "specification-definitions_select".
+ */
+export interface SpecificationDefinitionsSelect<T extends boolean = true> {
+  label?: T;
+  unit?: T;
+  group?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -328,9 +1191,376 @@ export interface CategoriesSelect<T extends boolean = true> {
 export interface ProductsSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
-  price?: T;
   description?: T;
-  category?: T;
+  longDescription?: T;
+  availability?: T;
+  categories?: T;
+  tags?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        caption?: T;
+        id?: T;
+      };
+  sku?: T;
+  variants?:
+    | T
+    | {
+        sku?: T;
+        color?: T;
+        size?: T;
+        variantImages?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  featured?: T;
+  newArrival?: T;
+  bestSeller?: T;
+  active?: T;
+  publishDate?: T;
+  specifications?:
+    | T
+    | {
+        definition?: T;
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  documents?:
+    | T
+    | {
+        title?: T;
+        file?: T;
+        id?: T;
+      };
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        metaImage?: T;
+        keywords?: T;
+      };
+  sourceUrl?: T;
+  createdBy?: T;
+  updatedBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  pageType?: T;
+  hero?:
+    | T
+    | {
+        heading?: T;
+        subheading?: T;
+        backgroundImage?: T;
+        backgroundVideo?: T;
+        mediaType?: T;
+        overlayOpacity?: T;
+        ctaButtons?:
+          | T
+          | {
+              label?: T;
+              link?: T;
+              style?: T;
+              id?: T;
+            };
+      };
+  heroSlides?:
+    | T
+    | {
+        image?: T;
+        imageUrl?: T;
+        title?: T;
+        subtitle?: T;
+        ctaLabel?: T;
+        ctaLink?: T;
+        id?: T;
+      };
+  sections?:
+    | T
+    | {
+        sectionType?: T;
+        heading?: T;
+        subheading?: T;
+        label?: T;
+        content?: T;
+        bodyText?: T;
+        secondaryText?: T;
+        image?: T;
+        imageUrl?: T;
+        images?:
+          | T
+          | {
+              image?: T;
+              imageUrl?: T;
+              caption?: T;
+              title?: T;
+              subtitle?: T;
+              id?: T;
+            };
+        buttonText?: T;
+        buttonLink?: T;
+        backgroundColor?: T;
+        stats?:
+          | T
+          | {
+              value?: T;
+              label?: T;
+              id?: T;
+            };
+        testimonials?:
+          | T
+          | {
+              quote?: T;
+              author?: T;
+              role?: T;
+              rating?: T;
+              id?: T;
+            };
+        benefits?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+        teamMembers?:
+          | T
+          | {
+              name?: T;
+              role?: T;
+              photo?: T;
+              photoUrl?: T;
+              id?: T;
+            };
+        milestones?:
+          | T
+          | {
+              year?: T;
+              event?: T;
+              id?: T;
+            };
+        faqItems?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+        inspirationItems?:
+          | T
+          | {
+              image?: T;
+              imageUrl?: T;
+              title?: T;
+              subtitle?: T;
+              link?: T;
+              id?: T;
+            };
+        videoUrl?: T;
+        id?: T;
+      };
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        metaImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-sections_select".
+ */
+export interface HeroSectionsSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  mediaType?: T;
+  backgroundImage?: T;
+  backgroundVideo?: T;
+  backgroundVideoUrl?: T;
+  overlayOpacity?: T;
+  textAlignment?: T;
+  ctaButtons?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        style?: T;
+        id?: T;
+      };
+  height?: T;
+  active?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu-items_select".
+ */
+export interface MenuItemsSelect<T extends boolean = true> {
+  label?: T;
+  link?: T;
+  order?: T;
+  megaMenu?: T;
+  columns?:
+    | T
+    | {
+        title?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+              description?: T;
+              image?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  simpleDropdown?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  featured?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        link?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-categories_select".
+ */
+export interface BlogCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-tags_select".
+ */
+export interface BlogTagsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  color?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-posts_select".
+ */
+export interface BlogPostsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  gallery?:
+    | T
+    | {
+        media?: T;
+        alt?: T;
+        caption?: T;
+        id?: T;
+      };
+  content?: T;
+  layout?:
+    | T
+    | {
+        textBlock?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+              blockName?: T;
+            };
+        imageBlock?:
+          | T
+          | {
+              image?: T;
+              caption?: T;
+              size?: T;
+              id?: T;
+              blockName?: T;
+            };
+        videoBlock?:
+          | T
+          | {
+              video?: T;
+              externalUrl?: T;
+              caption?: T;
+              id?: T;
+              blockName?: T;
+            };
+        quoteBlock?:
+          | T
+          | {
+              quoteText?: T;
+              attribution?: T;
+              id?: T;
+              blockName?: T;
+            };
+        embedBlock?:
+          | T
+          | {
+              embedUrl?: T;
+              caption?: T;
+              aspectRatio?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  author?: T;
+  categories?: T;
+  tags?: T;
+  relatedPosts?: T;
+  status?: T;
+  publishedDate?: T;
+  scheduledPublishDate?: T;
+  readingTime?: T;
+  viewCount?: T;
+  allowComments?: T;
+  featured?: T;
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        metaImage?: T;
+        canonicalURL?: T;
+        keywords?: T;
+      };
+  createdBy?: T;
+  updatedBy?: T;
   updatedAt?: T;
   createdAt?: T;
 }
