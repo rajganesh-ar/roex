@@ -40,6 +40,15 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
+
+# Runtime env vars (injected by Railway, with defaults from build args)
+ARG DATABASE_URL
+ARG PAYLOAD_SECRET
+ARG NEXT_PUBLIC_SERVER_URL
+ENV DATABASE_URL=${DATABASE_URL}
+ENV PAYLOAD_SECRET=${PAYLOAD_SECRET}
+ENV NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
+
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
