@@ -28,7 +28,7 @@ export async function GET() {
       if (hero.backgroundVideo?.url) {
         videoSrc = hero.backgroundVideo.url
       } else if (hero.backgroundVideo?.filename) {
-        videoSrc = `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${hero.backgroundVideo.filename}`
+        videoSrc = `/api/media/file/${hero.backgroundVideo.filename}`
       } else if (hero.backgroundVideoUrl) {
         videoSrc = hero.backgroundVideoUrl
       }
@@ -42,7 +42,7 @@ export async function GET() {
         backgroundImage:
           hero.backgroundImage?.url || hero.backgroundImage?.filename
             ? hero.backgroundImage?.url ||
-              `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${hero.backgroundImage.filename}`
+              `/api/media/file/${hero.backgroundImage.filename}`
             : null,
         backgroundVideo: videoSrc,
         overlayOpacity: hero.overlayOpacity || 40,

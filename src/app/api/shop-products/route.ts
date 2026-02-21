@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
           : '',
       image:
         product.images?.[0]?.image?.url || product.images?.[0]?.image?.filename
-          ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${product.images[0].image.filename}`
+          ? `/api/media/file/${product.images[0].image.filename}`
           : '/images/category-card-speaker.avif',
       availability: product.availability || 'available',
       featured: product.featured,

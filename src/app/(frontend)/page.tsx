@@ -64,7 +64,7 @@ export default async function HomePageServer() {
     image:
       product.images?.[0]?.image?.url ||
       (product.images?.[0]?.image?.filename
-        ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${product.images[0].image.filename}`
+        ? `/api/media/file/${product.images[0].image.filename}`
         : '/images/category-card-speaker.avif'),
   }))
 
@@ -76,7 +76,7 @@ export default async function HomePageServer() {
     image:
       cat.image?.url ||
       (cat.image?.filename
-        ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${cat.image.filename}`
+        ? `/api/media/file/${cat.image.filename}`
         : undefined),
   }))
 
@@ -85,7 +85,7 @@ export default async function HomePageServer() {
     image:
       post.featuredImage?.url ||
       (post.featuredImage?.filename
-        ? `/media/${post.featuredImage.filename}`
+        ? `/api/media/file/${post.featuredImage.filename}`
         : '/images/hero-background-2.avif'),
     category:
       post.category?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) ||
@@ -120,14 +120,14 @@ export default async function HomePageServer() {
         image =
           hero.backgroundImage?.url ||
           (hero.backgroundImage?.filename
-            ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${hero.backgroundImage.filename}`
+            ? `/api/media/file/${hero.backgroundImage.filename}`
             : '/images/hero-background-1.avif')
       } else if (hero.mediaType === 'video') {
         // Get video URL from uploaded file or external URL
         if (hero.backgroundVideo?.url) {
           video = hero.backgroundVideo.url
         } else if (hero.backgroundVideo?.filename) {
-          video = `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${hero.backgroundVideo.filename}`
+          video = `/api/media/file/${hero.backgroundVideo.filename}`
         } else if (hero.backgroundVideoUrl) {
           video = hero.backgroundVideoUrl
         }
@@ -136,7 +136,7 @@ export default async function HomePageServer() {
           image =
             hero.backgroundImage?.url ||
             (hero.backgroundImage?.filename
-              ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${hero.backgroundImage.filename}`
+              ? `/api/media/file/${hero.backgroundImage.filename}`
               : '/images/hero-background-1.avif')
         }
       }

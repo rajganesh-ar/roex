@@ -23,7 +23,7 @@ function formatPost(post: any) {
     excerpt: post.excerpt || '',
     featuredImage:
       post.featuredImage?.url ||
-      (post.featuredImage?.filename ? `/media/${post.featuredImage.filename}` : null) ||
+      (post.featuredImage?.filename ? `/api/media/file/${post.featuredImage.filename}` : null) ||
       CATEGORY_FALLBACK_IMAGES[post.category] ||
       DEFAULT_BLOG_IMAGE,
     content: post.content || null,

@@ -79,7 +79,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       return (
         img.image?.url ||
         (img.image?.filename
-          ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${img.image.filename}`
+          ? `/api/media/file/${img.image.filename}`
           : '/images/category-card-speaker.avif')
       )
     }) || ['/images/category-card-speaker.avif'],
@@ -102,7 +102,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     image:
       p.images?.[0]?.image?.url ||
       (p.images?.[0]?.image?.filename
-        ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${p.images[0].image.filename}`
+        ? `/api/media/file/${p.images[0].image.filename}`
         : '/images/category-card-speaker.avif'),
     availability: (p.availability as 'available' | 'unavailable') || 'available',
   }))

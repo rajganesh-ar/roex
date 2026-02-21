@@ -63,7 +63,7 @@ export default async function ShopPage() {
     image:
       product.images?.[0]?.image?.url ||
       (product.images?.[0]?.image?.filename
-        ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${product.images[0].image.filename}`
+        ? `/api/media/file/${product.images[0].image.filename}`
         : '/images/category-card-speaker.avif'),
     availability: (product.availability as 'available' | 'unavailable') || 'available',
     featured: product.featured,

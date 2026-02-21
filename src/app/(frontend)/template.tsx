@@ -51,7 +51,7 @@ export default async function Template({ children }: { children: React.ReactNode
     const imageUrl =
       cat.image?.url ||
       (cat.image?.filename
-        ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${cat.image.filename}`
+        ? `/api/media/file/${cat.image.filename}`
         : null)
     return {
       id: String(cat.id),
@@ -110,7 +110,7 @@ export default async function Template({ children }: { children: React.ReactNode
     image:
       product.images?.[0]?.image?.url ||
       (product.images?.[0]?.image?.filename
-        ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${product.images[0].image.filename}`
+        ? `/api/media/file/${product.images[0].image.filename}`
         : '/images/category-card-speaker.avif'),
   }))
 

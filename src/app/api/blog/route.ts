@@ -81,7 +81,7 @@ function formatPost(post: any) {
     excerpt: post.excerpt,
     featuredImage:
       post.featuredImage?.url || post.featuredImage?.filename
-        ? post.featuredImage.url || `/media/${post.featuredImage.filename}`
+        ? post.featuredImage.url || `/api/media/file/${post.featuredImage.filename}`
         : null,
     content: post.content,
     category: post.category,

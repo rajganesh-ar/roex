@@ -68,7 +68,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         const imageUrl =
           img.image?.url ||
           (img.image?.filename
-            ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${img.image.filename}`
+            ? `/api/media/file/${img.image.filename}`
             : '/images/category-card-speaker.avif')
         return imageUrl
       }) || ['/images/category-card-speaker.avif'],
@@ -95,7 +95,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       image:
         p.images?.[0]?.image?.url ||
         (p.images?.[0]?.image?.filename
-          ? `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/media/${p.images[0].image.filename}`
+          ? `/api/media/file/${p.images[0].image.filename}`
           : '/images/category-card-speaker.avif'),
       inStock: p.stock > 0,
     }))
