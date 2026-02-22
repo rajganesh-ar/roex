@@ -1,11 +1,13 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { unstable_cache } from 'next/cache'
 import { TemplateClient } from './TemplateClient'
 
 // Force dynamic rendering - DB (Railway internal) is only reachable at runtime, not build time
 export const dynamic = 'force-dynamic'
 
-const getHeaderData = async () => {
+const getHeaderData = unstable_cache(
+  async () => {
   try {
     const payload = await getPayload({ config })
     const [menuResult, categoriesResult, featuredResult] = await Promise.all([
@@ -13,7 +15,7 @@ const getHeaderData = async () => {
         .find({
           collection: 'menu-items',
           sort: 'order',
-          depth: 1,
+          depth: 0,
           limit: 20,
         })
         .catch(() => ({ docs: [] as any[] })),
@@ -31,6 +33,7 @@ const getHeaderData = async () => {
           sort: '-featured',
           limit: 4,
           depth: 1,
+          select: { name: true, slug: true, availability: true, images: true, categories: true },
         })
         .catch(() => ({ docs: [] as any[] })),
     ])
@@ -42,17 +45,17 @@ const getHeaderData = async () => {
       featuredResult: { docs: [] as any[] },
     }
   }
-}
+  },
+  ['header-data'],
+  { revalidate: 120 },
+)
 
 export default async function Template({ children }: { children: React.ReactNode }) {
   const { menuResult, categoriesResult, featuredResult } = await getHeaderData()
 
   const categories = categoriesResult.docs.map((cat: any) => {
     const imageUrl =
-      cat.image?.url ||
-      (cat.image?.filename
-        ? `/api/media/file/${cat.image.filename}`
-        : null)
+      cat.image?.url || (cat.image?.filename ? `/api/media/file/${cat.image.filename}` : null)
     return {
       id: String(cat.id),
       name: cat.name,

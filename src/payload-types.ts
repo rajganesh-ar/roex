@@ -635,7 +635,7 @@ export interface Page {
   createdAt: string;
 }
 /**
- * Manage hero sections with video/image backgrounds
+ * Manage hero slides. Recommended image size: 1920 × 1080 px (16:9). Use high-quality AVIF or WebP for best performance.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero-sections".
@@ -668,6 +668,10 @@ export interface HeroSection {
       }[]
     | null;
   height?: ('full' | 'large' | 'medium') | null;
+  /**
+   * Slide order — lower numbers appear first. Use 1, 2, 3…
+   */
+  order?: number | null;
   active?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -1407,6 +1411,7 @@ export interface HeroSectionsSelect<T extends boolean = true> {
         id?: T;
       };
   height?: T;
+  order?: T;
   active?: T;
   updatedAt?: T;
   createdAt?: T;

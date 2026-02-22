@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useRef } from 'react'
 import Link from 'next/link'
@@ -82,7 +82,7 @@ export default function ContactPage() {
       >
         <motion.div style={{ y: heroParallax }} className="absolute inset-0">
           <Image
-            src="/images/hero-background-3.avif"
+            src="/images/contact-office.avif"
             alt="Contact ROEX"
             fill
             className="object-cover scale-110"
@@ -144,8 +144,8 @@ export default function ContactPage() {
               {
                 icon: Clock,
                 title: 'Business Hours',
-                desc: 'Monday � Friday',
-                action: '9AM � 6PM CET',
+                desc: 'Monday – Friday',
+                action: '9AM – 6PM CET',
               },
             ].map((card, i) => (
               <motion.div
@@ -167,7 +167,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* MAIN CONTENT � FORM + INFO */}
+      {/* MAIN CONTENT – FORM + INFO */}
       <section className="py-20 sm:py-28 bg-white">
         <div className="max-w-[1800px] mx-auto px-6 lg:px-12">
           <div className="grid lg:grid-cols-5 gap-14 lg:gap-24">
@@ -352,7 +352,7 @@ export default function ContactPage() {
                     </p>
                     <p className="text-[14px] text-gray-900 font-light">+971 55 680 3334</p>
                     <p className="text-[12px] text-gray-400 mt-1 font-light">
-                      Monday � Friday, 9AM � 6PM CET
+                      Monday – Friday, 9AM – 6PM CET
                     </p>
                   </div>
                 </div>
@@ -371,7 +371,7 @@ export default function ContactPage() {
               {/* Office image */}
               <div className="relative aspect-[4/3] overflow-hidden mt-8">
                 <Image
-                  src="/images/hero-background-3.avif"
+                  src="/images/contact-office.avif"
                   alt="ROEX showroom"
                   fill
                   className="object-cover"
@@ -493,7 +493,7 @@ export default function ContactPage() {
             <AnimatedSection variant="fade-left">
               <p className="text-[15px] text-gray-500 font-light leading-[1.85] mb-10">
                 Explore our full range of 360 sound systems and audio solutions. From a single
-                showroom speaker to a complete building installation � ROEX has the perfect system
+                showroom speaker to a complete building installation – ROEX has the perfect system
                 for your business.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">

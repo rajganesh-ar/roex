@@ -74,17 +74,26 @@ export async function GET(req: NextRequest) {
 }
 
 function formatPost(post: any) {
+  const img = post.featuredImage
+  const featuredImage =
+    img && typeof img === 'object'
+      ? img.filename
+        ? `/api/media/file/${img.filename}`
+        : img.url || null
+      : null
+
+  const firstCat = Array.isArray(post.categories) ? post.categories[0] : null
+  const category =
+    typeof firstCat === 'object' && firstCat !== null ? firstCat.slug || firstCat.name || '' : ''
+
   return {
     id: post.id,
     title: post.title,
     slug: post.slug,
     excerpt: post.excerpt,
-    featuredImage:
-      post.featuredImage?.url || post.featuredImage?.filename
-        ? post.featuredImage.url || `/api/media/file/${post.featuredImage.filename}`
-        : null,
+    featuredImage,
     content: post.content,
-    category: post.category,
+    category,
     author: post.author
       ? {
           name: post.author.name,
@@ -92,9 +101,9 @@ function formatPost(post: any) {
           avatar: post.author.avatar?.url || null,
         }
       : null,
-    tags: post.tags?.map((t: any) => t.tag) || [],
+    tags: post.tags?.map((t: any) => (typeof t === 'object' ? t.name || t.tag : t)) || [],
     publishedDate: post.publishedDate,
-    readTime: post.readTime,
+    readTime: post.readingTime,
     featured: post.featured,
   }
 }

@@ -364,7 +364,7 @@ export function MegaMenuHeader({
                           >
                             {/* Tall image card */}
                             <Link
-                              href={`/shop?category=${cat.id}`}
+                              href={`/shop?category=${cat.slug}`}
                               className="block relative w-full aspect-[3/4] rounded-lg overflow-hidden group/card"
                             >
                               <Image
@@ -407,7 +407,7 @@ export function MegaMenuHeader({
                                         }}
                                       >
                                         <Link
-                                          href={`/shop?category=${child.id}`}
+                                          href={`/shop?category=${child.slug}`}
                                           className="text-[13px] text-white/70 hover:text-white transition-colors duration-200 flex items-center gap-2"
                                         >
                                           <span className="w-3 h-[1px] bg-white/30" />
@@ -477,7 +477,7 @@ export function MegaMenuHeader({
                                 .map((cat) => (
                                   <li key={cat.id}>
                                     <Link
-                                      href={`/shop?category=${cat.id}`}
+                                      href={`/shop?category=${cat.slug}`}
                                       className="text-[12px] text-white/40 hover:text-white transition-colors duration-200"
                                     >
                                       {cat.name}
@@ -751,7 +751,7 @@ export function MegaMenuHeader({
                             return (
                               <div key={parent.id} className="mb-4">
                                 <Link
-                                  href={`/shop?category=${parent.id}`}
+                                  href={`/shop?category=${parent.slug}`}
                                   className="block text-[12px] font-medium uppercase tracking-[0.15em] text-white/70 mb-2 pl-4"
                                   onClick={() => setMobileMenuOpen(false)}
                                 >
@@ -762,7 +762,7 @@ export function MegaMenuHeader({
                                     {children.map((child) => (
                                       <Link
                                         key={child.id}
-                                        href={`/shop?category=${child.id}`}
+                                        href={`/shop?category=${child.slug}`}
                                         className="block text-[13px] text-white/40 py-1"
                                         onClick={() => setMobileMenuOpen(false)}
                                       >

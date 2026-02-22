@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import React, { useState, useRef } from 'react'
 import Link from 'next/link'
@@ -46,7 +46,7 @@ const industries = [
     image: '/images/elegent-shopping.avif',
     secondaryImage: '/images/elegent-shopping-secondary.avif',
     secondaryCaption:
-      '360� sound coverage across every level and zone � consistent quality from entrance to exit.',
+      '360 sound coverage across every level and zone – consistent quality from entrance to exit.',
     description:
       'Shopping centres are not just places where people consume. They are also places where people communicate, think, feel and make decisions. A pleasant sound environment ensures that all these activities are positively influenced.',
     quote: 'Shopping centres are increasingly becoming social meeting places.',
@@ -67,7 +67,7 @@ const industries = [
     image: '/images/elegent-hotel.avif',
     secondaryImage: '/images/elegent-hotel-secondary.avif',
     secondaryCaption:
-      'From lobby to penthouse � timeless speakers that blend into every interior without compromise.',
+      'From lobby to penthouse – timeless speakers that blend into every interior without compromise.',
     description:
       'In the hotel industry, the importance of a pleasant sound atmosphere for guest well-being is often underestimated. The psychotropic effect of sound perceived as positive is reflected in longer stays, greater willingness to spend, and the desire to return.',
     quote: 'Space is also defined by its sound.',
@@ -77,7 +77,7 @@ const industries = [
       { value: '24/7', label: 'Reliable performance' },
     ],
     details:
-      'Whether wellness area, bar, lounge, terrace or restaurant � the simple and timeless elegance of ROEX speakers adapts to any interior design. From in-ceiling to pendant, track or floor-standing models, the even 360 sound carpet can be individually integrated into every room of your hotel.',
+      'Whether wellness area, bar, lounge, terrace or restaurant – the simple and timeless elegance of ROEX speakers adapts to any interior design. From in-ceiling to pendant, track or floor-standing models, the even 360 sound carpet can be individually integrated into every room of your hotel.',
     videoEmbed: 'https://www.youtube.com/embed/ONAcWkbv65M',
   },
   {
@@ -88,7 +88,7 @@ const industries = [
     image: '/images/elegent-resturant.avif',
     secondaryImage: '/images/elegent-resturant-secondary.avif',
     secondaryCaption:
-      'Balanced, even sound that complements great food � conversations flow, atmosphere lingers.',
+      'Balanced, even sound that complements great food – conversations flow, atmosphere lingers.',
     description:
       'In addition to good food, a feel-good atmosphere is everything that guests want from a restaurant. All senses must be appealed to. Sound contributes significantly to the feel-good experience.',
     quote: 'Audio is one of the most useful components of efficient interior strategies.',
@@ -98,7 +98,7 @@ const industries = [
       { value: '100%', label: 'Design integration' },
     ],
     details:
-      'The sound should be balanced, even and of high quality so that conversations are not drowned out, but soothing sounds can be fully perceived. Our elegant and timeless speakers combine all these competences � ceiling or wall-mounted, pendant, track, or floor-standing models that maintain the authenticity of your interior.',
+      'The sound should be balanced, even and of high quality so that conversations are not drowned out, but soothing sounds can be fully perceived. Our elegant and timeless speakers combine all these competences – ceiling or wall-mounted, pendant, track, or floor-standing models that maintain the authenticity of your interior.',
     videoEmbed: 'https://www.youtube.com/embed/IYRmWObHUrY',
   },
   {
@@ -109,7 +109,7 @@ const industries = [
     image: '/images/elegent-office.avif',
     secondaryImage: '/images/elegent-office-secondary.avif',
     secondaryCaption:
-      'Unobtrusive background music that boosts productivity by 48% � heard but never noticed.',
+      'Unobtrusive background music that boosts productivity by 48% – heard but never noticed.',
     description:
       'How can you create a pleasant atmosphere for your company to increase the efficiency of your employees? Music played in even, high-quality distribution has the advantage that it does not require cognitive concentration.',
     quote: 'A high-quality audio concept increases productivity by 48%.',
@@ -119,7 +119,7 @@ const industries = [
       { value: '1', label: 'Compatible control app' },
     ],
     details:
-      'Listening to music in the workplace has a significantly positive effect on the mood of employees. Only perceived unnoticed, it increases the well-being of its listeners. An important aspect is that it is high-quality sound with even and interference-free dispersion. ROEX speakers offer all this � elegant, timeless design that integrates into any room.',
+      'Listening to music in the workplace has a significantly positive effect on the mood of employees. Only perceived unnoticed, it increases the well-being of its listeners. An important aspect is that it is high-quality sound with even and interference-free dispersion. ROEX speakers offer all this – elegant, timeless design that integrates into any room.',
     videoEmbed: 'https://www.youtube.com/embed/QVbGFiVUTxM',
   },
   {
@@ -130,9 +130,9 @@ const industries = [
     image: '/images/elegent-spa.avif',
     secondaryImage: '/images/elegent-spa-secondary.avif',
     secondaryCaption:
-      'Serene soundscapes from 20�20,000 Hz � every frequency pure, every moment of calm enhanced.',
+      'Serene soundscapes from 20–20,000 Hz – every frequency pure, every moment of calm enhanced.',
     description:
-      'Sound accompanies us every day � sometimes too loud, sometimes too quiet � and sometimes in such a way that it simply carries us. Only a perfect sound system can guarantee this in wellness environments.',
+      'Sound accompanies us every day – sometimes too loud, sometimes too quiet – and sometimes in such a way that it simply carries us. Only a perfect sound system can guarantee this in wellness environments.',
     quote: 'Good sound is becoming an indispensable element in architecture.',
     stats: [
       { value: '20Hz', label: 'Full spectrum audio' },
@@ -140,7 +140,7 @@ const industries = [
       { value: '', label: 'Expandable zones' },
     ],
     details:
-      'ROEX has set itself the task of providing excellent acoustics for every type and form of architecture. With a wide range of mounting options and compatibility with a third-party smart control application, creating the perfect serene soundscape for relaxation is effortless. 20�20,000 Hz � every frequency impressively accurate, pure enjoyment for every ear.',
+      'ROEX has set itself the task of providing excellent acoustics for every type and form of architecture. With a wide range of mounting options and compatibility with a third-party smart control application, creating the perfect serene soundscape for relaxation is effortless. 20–20,000 Hz – every frequency impressively accurate, pure enjoyment for every ear.',
     videoEmbed: 'https://www.youtube.com/embed/ya1ERHjte9o',
   },
 ]
@@ -159,7 +159,7 @@ const advantages = [
   {
     num: '03',
     title: 'More From Less',
-    desc: 'Requires up to 40% fewer speakers � while simultaneously achieving a significantly better sound result.',
+    desc: 'Requires up to 40% fewer speakers – while simultaneously achieving a significantly better sound result.',
   },
   {
     num: '04',
@@ -169,7 +169,7 @@ const advantages = [
   {
     num: '05',
     title: 'Sound Merges Light',
-    desc: 'Integrate perfectly into lighting design. Positioned on tracks or between light sources � aesthetic symbiosis.',
+    desc: 'Integrate perfectly into lighting design. Positioned on tracks or between light sources – aesthetic symbiosis.',
   },
   {
     num: '06',
@@ -259,7 +259,7 @@ export default function SolutionsPage() {
             <AnimatedSection variant="fade-left" className="sm:max-w-sm">
               <p className="text-[14px] text-gray-500 font-light leading-[1.85]">
                 Our speakers produce excellent 360 sound that reaches every corner and is
-                distributed evenly with consistent quality � creating a feeling of well-being that
+                distributed evenly with consistent quality – creating a feeling of well-being that
                 positively influences every environment.
               </p>
             </AnimatedSection>
@@ -425,7 +425,7 @@ export default function SolutionsPage() {
                 </p>
               </div>
               <h2 className="font-montserrat text-3xl sm:text-4xl md:text-5xl font-light text-gray-900 tracking-tight mb-8">
-                Louder, quieter, equaliser � all from one compatible app
+                Louder, quieter, equaliser – all from one compatible app
               </h2>
               <div className="space-y-4 text-[14px] text-gray-500 font-light leading-[1.85]">
                 <p>
@@ -436,7 +436,7 @@ export default function SolutionsPage() {
                 <p>
                   For those who prefer full control from a computer, the web-based interface lets
                   you manage your entire sound system via the network. Zone-by-zone control,
-                  equaliser settings, scheduling � everything at your fingertips.
+                  equaliser settings, scheduling – everything at your fingertips.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 mt-10">

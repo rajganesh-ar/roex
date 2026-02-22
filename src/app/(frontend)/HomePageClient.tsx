@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, Play, Star, Quote, Volume2, Pause } from 'lucide-react'
 import {
   Carousel,
@@ -338,83 +338,108 @@ export default function HomePage({
       {/* ═══════════════ HERO CAROUSEL ═══════════════ */}
       {heroSlides.length > 0 && (
         <section className="relative h-screen overflow-hidden">
-          <AnimatePresence mode="wait">
-            {heroSlides.map(
-              (s, i) =>
-                i === currentSlide && (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, scale: 1.15 }}
-                    animate={{ opacity: 1, scale: 1.05 }}
-                    exit={{ opacity: 0, scale: 1 }}
-                    transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0"
-                  >
-                    <motion.div style={{ y: heroParallax }} className="absolute inset-0">
-                      {s.mediaType === 'video' && s.video ? (
-                        <video
-                          src={s.video}
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          poster={s.image}
-                          className="absolute inset-0 w-full h-full object-cover"
-                        />
-                      ) : (
-                        <Image
-                          src={s.image}
-                          alt={s.title}
-                          fill
-                          className="object-cover"
-                          priority={i === 0}
-                          sizes="100vw"
-                        />
-                      )}
-                    </motion.div>
-                  </motion.div>
-                ),
-            )}
-          </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/70" />
+          {/* All slides are always in the DOM so their images preload immediately */}
+          {heroSlides.map((s, i) => (
+            <motion.div
+              key={i}
+              animate={{
+                opacity: i === currentSlide ? 1 : 0,
+                scale: i === currentSlide ? 1.05 : 1.15,
+              }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute inset-0"
+              style={{ zIndex: i === currentSlide ? 1 : 0 }}
+            >
+              <motion.div
+                style={{ y: heroParallax }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                {s.mediaType === 'video' && s.video ? (
+                  <video
+                    src={s.video}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover object-center bg-black"
+                  />
+                ) : (
+                  <Image
+                    src={s.image}
+                    alt={s.title}
+                    fill
+                    className="object-cover object-center"
+                    priority
+                    fetchPriority={i === 0 ? 'high' : 'auto'}
+                    sizes="100vw"
+                  />
+                )}
+              </motion.div>
+            </motion.div>
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/80" />
 
           <motion.div
             style={{ opacity: heroOpacity }}
-            className="relative z-10 h-full flex flex-col justify-end pb-20 sm:pb-24 md:pb-32 lg:pb-40"
+            className="relative z-10 h-full flex flex-col justify-end pb-14 sm:pb-18 md:pb-24 lg:pb-28"
           >
             <div className="max-w-[1800px] mx-auto w-full px-6 lg:px-12">
-              <div className="max-w-3xl">
+              <div className="max-w-4xl">
+                {/* Eyebrow line */}
+                <motion.div
+                  key={`eyebrow-${currentSlide}`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex items-center gap-3 mb-4"
+                >
+                  <span className="w-8 h-px bg-white/50" />
+                  <span className="text-[10px] uppercase tracking-[0.35em] text-white/70 font-light">
+                    {String(currentSlide + 1).padStart(2, '0')} &mdash; Premium Audio
+                  </span>
+                </motion.div>
+
                 <motion.h1
                   key={currentSlide}
-                  initial={{ opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                  className="font-montserrat text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white leading-[1.05] tracking-[-0.02em] whitespace-pre-line"
+                  className="font-montserrat text-[2.2rem] sm:text-[2.8rem] md:text-5xl lg:text-6xl font-light text-white leading-[1.05] tracking-[-0.02em] whitespace-pre-line mb-4"
                 >
                   {slide.title}
                 </motion.h1>
+
+                <motion.div
+                  key={`divider-${currentSlide}`}
+                  initial={{ scaleX: 0, originX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="w-16 h-px bg-white/40 mb-4"
+                />
+
                 <motion.p
                   key={`sub-${currentSlide}`}
-                  initial={{ opacity: 0, y: 25 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                  className="mt-5 sm:mt-7 text-base sm:text-lg md:text-xl text-white/70 font-light max-w-xl leading-relaxed"
+                  transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[13px] sm:text-[15px] text-white/85 font-light max-w-lg leading-[1.9] tracking-wide mb-7"
                 >
                   {slide.subtitle}
                 </motion.p>
+
                 <motion.div
                   key={`cta-${currentSlide}`}
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex flex-col sm:flex-row items-start gap-4"
+                  transition={{ duration: 0.7, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex items-center gap-6"
                 >
                   <Link
                     href={slide.cta.href}
-                    className="inline-flex items-center justify-center h-12 px-10 mt-8 sm:mt-10 bg-white text-black text-[11px] uppercase tracking-[0.2em] font-medium hover:bg-white/90 transition-all duration-300 group"
+                    className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.25em] text-white border-b border-white/50 pb-1 hover:border-white transition-colors duration-300 group"
                   >
                     {slide.cta.label}
-                    <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                    <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform duration-300" />
                   </Link>
                 </motion.div>
               </div>
@@ -444,12 +469,7 @@ export default function HomePage({
               ))}
             </div>
 
-            {/* Slide counter */}
-            <div className="absolute bottom-14 sm:bottom-16 right-6 lg:right-10 hidden md:flex items-center gap-3 text-white/50 text-[12px] tracking-[0.2em]">
-              <span className="text-white">{String(currentSlide + 1).padStart(2, '0')}</span>
-              <span className="w-8 h-[1px] bg-white/30" />
-              <span>{String(heroSlides.length).padStart(2, '0')}</span>
-            </div>
+            {/* Slide counter — hidden since it's now in the eyebrow */}
           </motion.div>
 
           {/* Scroll indicator */}
@@ -990,12 +1010,16 @@ export default function HomePage({
 
         {/* ═══════════════ FULL-WIDTH IMAGE + TEXT ═══════════════ */}
         <div className="relative min-h-[55vh] sm:min-h-[65vh] flex items-center overflow-hidden mt-12">
-          <motion.div style={{ y: fullWidthParallax }} className="absolute inset-0">
+          <motion.div
+            style={{ y: fullWidthParallax }}
+            className="absolute -top-[200px] -bottom-[200px] left-0 right-0"
+          >
             <Image
-              src="/images/hero-background-3.avif"
+              src="/images/homepage-fullwidth.avif"
               alt="ROEX ceiling speakers in modern office"
               fill
-              className="object-cover"
+              className="object-cover object-center"
+              sizes="100vw"
             />
           </motion.div>
           <div className="absolute inset-0 bg-black/55" />

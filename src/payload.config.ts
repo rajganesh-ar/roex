@@ -54,9 +54,11 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
-      max: 5, // Small pool for Railway free tier
-      idleTimeoutMillis: 30000,
+      max: 10,
+      idleTimeoutMillis: 60000,
       connectionTimeoutMillis: 10000,
+      keepAlive: true,
+      keepAliveInitialDelayMillis: 10000,
     },
     push: false, // Use migrations instead — skips slow schema introspection on startup
   }),

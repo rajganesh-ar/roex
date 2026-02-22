@@ -73,7 +73,7 @@ export default function ShopPageClient({
     availability: true,
   })
   const [expandedParents, setExpandedParents] = useState<Record<string, boolean>>({})
-  const [filtersChanged, setFiltersChanged] = useState(false)
+  const [filtersChanged, setFiltersChanged] = useState(() => !!(initialCategory || initialSearch))
 
   const heroRef = useRef<HTMLDivElement>(null)
   const { scrollY } = useScroll()
@@ -159,7 +159,9 @@ export default function ShopPageClient({
   const hasMore = visibleCount < products.length
 
   const activeCategory =
-    selectedCategories.length === 1 ? categories.find((c) => c.id === selectedCategories[0]) : null
+    selectedCategories.length === 1
+      ? categories.find((c) => c.slug === selectedCategories[0])
+      : null
 
   const totalProducts = products.length
 
@@ -244,9 +246,9 @@ export default function ShopPageClient({
                     </button>
                   )}
                   <button
-                    onClick={() => handleCategoryToggle(parent.id)}
+                    onClick={() => handleCategoryToggle(parent.slug)}
                     className={`flex-1 flex items-center justify-between px-2 py-2 text-left transition-all duration-200 border-l-2 ${
-                      selectedCategories.includes(parent.id)
+                      selectedCategories.includes(parent.slug)
                         ? 'border-gray-900 text-gray-900'
                         : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-200'
                     }`}
@@ -268,9 +270,9 @@ export default function ShopPageClient({
                         {children.map((child) => (
                           <button
                             key={child.id}
-                            onClick={() => handleCategoryToggle(child.id)}
+                            onClick={() => handleCategoryToggle(child.slug)}
                             className={`flex items-center justify-between w-full px-2 py-1.5 text-left transition-all duration-200 border-l-2 ${
-                              selectedCategories.includes(child.id)
+                              selectedCategories.includes(child.slug)
                                 ? 'border-gray-900 text-gray-900'
                                 : 'border-transparent text-gray-400 hover:text-gray-900 hover:border-gray-200'
                             }`}
@@ -586,7 +588,7 @@ export default function ShopPageClient({
                 </button>
               )}
               {selectedCategories.map((catId) => {
-                const cat = categories.find((c) => c.id === catId)
+                const cat = categories.find((c) => c.slug === catId)
                 return (
                   <button
                     key={catId}

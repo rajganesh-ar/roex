@@ -5,7 +5,9 @@ export const HeroSections: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     group: 'Content',
-    description: 'Manage hero sections with video/image backgrounds',
+    description:
+      'Manage hero slides. Recommended image size: 1920 × 1080 px (16:9). Use high-quality AVIF or WebP for best performance.',
+    defaultColumns: ['title', 'order', 'mediaType', 'active'],
   },
   access: {
     read: () => true,
@@ -111,6 +113,14 @@ export const HeroSections: CollectionConfig = {
         { label: 'Large (80vh)', value: 'large' },
         { label: 'Medium (60vh)', value: 'medium' },
       ],
+    },
+    {
+      name: 'order',
+      type: 'number',
+      defaultValue: 0,
+      admin: {
+        description: 'Slide order — lower numbers appear first. Use 1, 2, 3…',
+      },
     },
     {
       name: 'active',

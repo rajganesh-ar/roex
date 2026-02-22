@@ -32,11 +32,9 @@ export default async function BlogPage() {
     title: post.title,
     slug: post.slug,
     excerpt: post.excerpt || '',
-    featuredImage:
-      post.featuredImage?.url ||
-      (post.featuredImage?.filename ? `/api/media/file/${post.featuredImage.filename}` : null) ||
-      CATEGORY_FALLBACK_IMAGES[post.category] ||
-      DEFAULT_BLOG_IMAGE,
+    featuredImage: post.featuredImage?.filename
+      ? `/api/media/file/${post.featuredImage.filename}`
+      : CATEGORY_FALLBACK_IMAGES[post.category] || DEFAULT_BLOG_IMAGE,
     category: post.category || '',
     author: post.author
       ? {

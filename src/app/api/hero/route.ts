@@ -41,8 +41,7 @@ export async function GET() {
         mediaType: hero.mediaType,
         backgroundImage:
           hero.backgroundImage?.url || hero.backgroundImage?.filename
-            ? hero.backgroundImage?.url ||
-              `/api/media/file/${hero.backgroundImage.filename}`
+            ? hero.backgroundImage?.url || `/api/media/file/${hero.backgroundImage.filename}`
             : null,
         backgroundVideo: videoSrc,
         overlayOpacity: hero.overlayOpacity || 40,

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 export interface CarouselSlide {
@@ -106,17 +105,9 @@ export default function ElegantCarousel({ items, autoPlayInterval = 5000 }: Eleg
                 {slide.title}
               </h3>
 
-              <p className="text-[14px] text-gray-500 font-light leading-[1.85] mb-6 sm:mb-8 max-w-sm">
+              <p className="text-[15px] text-gray-500 font-light leading-[2] max-w-lg">
                 {slide.subtitle}
               </p>
-
-              <Link
-                href={slide.href || '#'}
-                className="inline-flex items-center gap-2.5 text-[11px] uppercase tracking-[0.2em] text-gray-900 border-b border-gray-900 pb-1.5"
-              >
-                {slide.cta}
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
             </div>
 
             {/* Navigation arrows */}

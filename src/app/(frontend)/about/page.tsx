@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import React, { useState } from 'react'
 import Link from 'next/link'
@@ -35,20 +35,20 @@ const milestones = [
   {
     year: '2015',
     event:
-      'ROEX founded in Scotland, United Kingdom with a vision to manufacture high-end audio speakers that distribute sound evenly over 360� like a fine spray.',
-    image: '/images/hero-background-2.avif',
+      'ROEX founded in Scotland, United Kingdom with a vision to manufacture high-end audio speakers that distribute sound evenly over 360 like a fine spray.',
+    image: '/images/timeline-1.avif',
   },
   {
     year: '2017',
     event:
-      'Launch of proprietary 360° Sound technology with advanced acoustic distribution principles for commercial environments.',
+      'Launch of proprietary 360Â° Sound technology with advanced acoustic distribution principles for commercial environments.',
     image: '/images/hero-background-4.avif',
   },
   {
     year: '2019',
     event:
       'Expanded manufacturing capabilities to include professional audio cables and integrated commercial audio components.',
-    image: '/images/hero-background-3.avif',
+    image: '/images/timeline-3.avif',
   },
   {
     year: '2021',
@@ -189,7 +189,7 @@ export default function AboutPage() {
                 </p>
                 <p>
                   Unlike conventional speakers, our 360 Sound technology ensures optimal sound
-                  quality from every listening position � requiring up to 40% fewer speakers while
+                  quality from every listening position – requiring up to 40% fewer speakers while
                   delivering significantly better results.
                 </p>
               </div>
@@ -203,7 +203,7 @@ export default function AboutPage() {
             <AnimatedSection variant="fade-left">
               <div className="relative aspect-[4/5] overflow-hidden">
                 <Image
-                  src="/images/hero-background-4.avif"
+                  src="/images/about-mission.avif"
                   alt="ROEX speakers on lighting track"
                   fill
                   className="object-cover"
@@ -275,7 +275,7 @@ export default function AboutPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="relative aspect-[3/4] overflow-hidden">
                   <Image
-                    src="/images/elegent-hotel.avif"
+                    src="/images/about-advantage-1.avif"
                     alt="Hotel audio"
                     fill
                     className="object-cover"
@@ -284,7 +284,7 @@ export default function AboutPage() {
                 </div>
                 <div className="relative aspect-[3/4] overflow-hidden mt-8">
                   <Image
-                    src="/images/elegent-resturant.avif"
+                    src="/images/about-advantage-2.avif"
                     alt="Restaurant audio"
                     fill
                     className="object-cover"
@@ -453,7 +453,7 @@ export default function AboutPage() {
       {/* FULL-WIDTH IMAGE */}
       <section className="relative h-[50vh] sm:h-[60vh] overflow-hidden">
         <Image
-          src="/images/hero-background-3.avif"
+          src="/images/about-fullwidth.avif"
           alt="ROEX in office"
           fill
           className="object-cover"
@@ -474,7 +474,7 @@ export default function AboutPage() {
               </h2>
               <p className="mt-6 text-[15px] text-white/55 font-light leading-[1.85] max-w-lg">
                 ROEX speaker systems integrate perfectly into lighting design. Whether positioned on
-                lighting tracks or between light sources � an aesthetic symbiosis of sound and
+                lighting tracks or between light sources – an aesthetic symbiosis of sound and
                 light.
               </p>
             </AnimatedSection>
