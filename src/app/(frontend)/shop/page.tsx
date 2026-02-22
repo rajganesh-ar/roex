@@ -76,8 +76,10 @@ export default async function ShopPage() {
     ).length
   }
 
+  // Suspense handles useSearchParams client-side resolution;
+  // loading.tsx covers the footer with its fixed overlay during server data fetch
   return (
-    <Suspense>
+    <Suspense fallback={<div className="min-h-[calc(100vh-64px)] bg-white" />}>
       <ShopPageClient initialCategories={categories} initialProducts={products} />
     </Suspense>
   )

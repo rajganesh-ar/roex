@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import HomePage from './HomePageClient'
@@ -5,6 +6,28 @@ import type { BlogPostData, HeroSlide } from './HomePageClient'
 
 // Force dynamic - DB only reachable at runtime (Railway internal network)
 export const dynamic = 'force-dynamic'
+
+// Skeleton shown immediately while CMS queries run — mirrors the dark full-screen hero
+function HomePageSkeleton() {
+  return (
+    <div className="min-h-screen bg-[#111] flex items-end pb-24 sm:pb-28 md:pb-32">
+      <div className="max-w-[1800px] mx-auto w-full px-6 lg:px-12">
+        <div className="max-w-4xl space-y-4">
+          {/* Eyebrow */}
+          <div className="h-2.5 w-28 bg-white/15 rounded animate-pulse" />
+          {/* Headline line 1 */}
+          <div className="h-10 sm:h-14 md:h-16 w-3/4 bg-white/15 rounded animate-pulse" />
+          {/* Headline line 2 */}
+          <div className="h-10 sm:h-14 md:h-16 w-1/2 bg-white/15 rounded animate-pulse" />
+          {/* Subtitle */}
+          <div className="h-3 w-72 bg-white/10 rounded animate-pulse mt-2" />
+          {/* CTA */}
+          <div className="h-10 w-36 bg-white/10 rounded animate-pulse mt-6" />
+        </div>
+      </div>
+    </div>
+  )
+}
 
 async function getHomePageData() {
   const payload = await getPayload({ config })
@@ -42,7 +65,7 @@ async function getHomePageData() {
   return { productsResult, categoriesResult, blogResult, heroResult }
 }
 
-export default async function HomePageServer() {
+async function HomePageData() {
   const { productsResult, categoriesResult, blogResult, heroResult } = await getHomePageData()
 
   // Transform products to match client expected format
@@ -159,5 +182,14 @@ export default async function HomePageServer() {
       initialBlogPosts={blogPosts}
       initialHeroSlides={heroSlides.length > 0 ? heroSlides : undefined}
     />
+  )
+}
+
+// Outer wrapper renders immediately, streams HomePageData in
+export default function HomePageServer() {
+  return (
+    <Suspense fallback={<HomePageSkeleton />}>
+      <HomePageData />
+    </Suspense>
   )
 }

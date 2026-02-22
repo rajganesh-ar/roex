@@ -186,12 +186,6 @@ export function MegaMenuHeader({ megaMenuColumns, featuredProducts = [] }: MegaM
                 Search
               </span>
             </button>
-            <Link
-              href="/contact"
-              className="flex items-center px-6 h-[64px] text-[11px] font-grotesk font-semibold tracking-[0.18em] uppercase bg-white text-black hover:bg-white/90 transition-colors duration-150 border-l border-white/10"
-            >
-              Enquire
-            </Link>
           </div>
 
           {/* Mobile actions */}
@@ -244,7 +238,7 @@ export function MegaMenuHeader({ megaMenuColumns, featuredProducts = [] }: MegaM
                 >
                   {/* Portrait image — 3:4 ratio, compact card */}
                   <Link
-                    href={`/products?category=${col.slug}`}
+                    href={`/shop?category=${col.slug}`}
                     style={{
                       aspectRatio: '3/4',
                       borderRadius: '0.5rem',
@@ -311,7 +305,7 @@ export function MegaMenuHeader({ megaMenuColumns, featuredProducts = [] }: MegaM
                       {col.children.map((child) => (
                         <Link
                           key={child.id}
-                          href={`/products?category=${child.slug}`}
+                          href={`/shop?category=${child.slug}`}
                           className="text-[10px] font-grotesk font-medium tracking-[0.14em] uppercase text-white/35 hover:text-white transition-colors duration-150 flex items-center gap-1.5 group/sub"
                         >
                           <span className="w-2.5 h-px bg-white/20 group-hover/sub:bg-white/60 transition-colors duration-150 flex-shrink-0" />
@@ -322,7 +316,7 @@ export function MegaMenuHeader({ megaMenuColumns, featuredProducts = [] }: MegaM
                   ) : (
                     <div className="pt-4 pb-2">
                       <Link
-                        href={`/products?category=${col.slug}`}
+                        href={`/shop?category=${col.slug}`}
                         className="text-[10px] font-grotesk font-medium tracking-[0.14em] uppercase text-white/30 hover:text-white transition-colors duration-150 flex items-center gap-1.5"
                       >
                         <span className="w-2.5 h-px bg-white/20 flex-shrink-0" />
@@ -384,7 +378,7 @@ export function MegaMenuHeader({ megaMenuColumns, featuredProducts = [] }: MegaM
 
                 <div className="py-4 mt-auto">
                   <Link
-                    href="/products"
+                    href="/shop"
                     className="flex items-center justify-between w-full px-4 py-2.5 bg-white text-black text-[10px] font-grotesk font-semibold tracking-[0.2em] uppercase hover:bg-white/90 transition-colors duration-150"
                   >
                     All Products <ArrowRight className="h-3.5 w-3.5" />
@@ -476,7 +470,7 @@ export function MegaMenuHeader({ megaMenuColumns, featuredProducts = [] }: MegaM
                   {columns.map((col) => (
                     <Link
                       key={col.id}
-                      href={`/products?category=${col.slug}`}
+                      href={`/shop?category=${col.slug}`}
                       onClick={() => setSearchOpen(false)}
                       className="px-5 py-2.5 border border-white/10 text-[11px] font-grotesk font-medium tracking-[0.15em] uppercase text-white/40 hover:text-white hover:border-white/30 hover:bg-white/[0.03] transition-all duration-150 mr-2 mb-2"
                     >
@@ -495,13 +489,7 @@ export function MegaMenuHeader({ megaMenuColumns, featuredProducts = [] }: MegaM
         <div className="fixed inset-0 z-[60] bg-black flex flex-col lg:hidden animate-[megaSlideDown_0.2s_ease-out_both]">
           <div className="flex items-center justify-between px-4 h-[64px] border-b border-white/[0.08]">
             <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-              <Image
-                src="/logo.svg"
-                alt="ROEX"
-                width={90}
-                height={32}
-                className="h-7 w-auto"
-              />
+              <Image src="/logo.svg" alt="ROEX" width={90} height={32} className="h-7 w-auto" />
             </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}
@@ -528,7 +516,7 @@ export function MegaMenuHeader({ megaMenuColumns, featuredProducts = [] }: MegaM
                   {columns.map((col) => (
                     <div key={col.id} className="border-b border-white/[0.05] last:border-0">
                       <Link
-                        href={`/products?category=${col.slug}`}
+                        href={`/shop?category=${col.slug}`}
                         onClick={() => setMobileMenuOpen(false)}
                         className="block px-8 py-3 text-[11px] font-grotesk font-semibold tracking-[0.15em] uppercase text-white/60 hover:text-white hover:bg-white/[0.03] transition-colors"
                       >
@@ -537,7 +525,7 @@ export function MegaMenuHeader({ megaMenuColumns, featuredProducts = [] }: MegaM
                       {col.children.map((child) => (
                         <Link
                           key={child.id}
-                          href={`/products?category=${child.slug}`}
+                          href={`/shop?category=${child.slug}`}
                           onClick={() => setMobileMenuOpen(false)}
                           className="flex items-center gap-3 px-10 py-2.5 text-[11px] font-grotesk tracking-[0.12em] uppercase text-white/30 hover:text-white/60 transition-colors"
                         >

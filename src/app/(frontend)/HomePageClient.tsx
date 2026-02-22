@@ -330,6 +330,7 @@ export default function HomePage({
                     muted
                     loop
                     playsInline
+                    preload="auto"
                     className="absolute inset-0 w-full h-full object-cover object-center bg-black"
                   />
                 ) : (
@@ -604,11 +605,14 @@ export default function HomePage({
 
             <AnimatedSection variant="fade-right" delay={0.2}>
               <div className="relative aspect-video bg-black overflow-hidden shadow-xl">
-                <iframe
-                  src="https://www.youtube.com/embed/QVbGFiVUTxM?autoplay=1&mute=1&controls=0&loop=1&playlist=QVbGFiVUTxM&rel=0&modestbranding=1&playsinline=1"
-                  title="ROEX 360° Audio — Limitless & Intuitive"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  className="absolute inset-0 w-full h-full pointer-events-none"
+                <video
+                  src="/videos/roex-360.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 />
               </div>
             </AnimatedSection>

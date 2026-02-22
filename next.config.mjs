@@ -41,8 +41,18 @@ const nextConfig = {
         ],
       },
       {
+        // Cache Payload CMS media files served via API route
+        source: '/api/media/file/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
         // Cache static assets aggressively
-        source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2)',
+        source: '/(.*)\\.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|mp4|webm)',
         headers: [
           {
             key: 'Cache-Control',

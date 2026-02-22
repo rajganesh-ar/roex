@@ -66,8 +66,20 @@ export default function ShopPageClient({
   const [showAvailableOnly, setShowAvailableOnly] = useState(false)
 
   const [categories] = useState<Category[]>(initialCategories)
-  const [products, setProducts] = useState<Product[]>(initialProducts)
-  const [loading, setLoading] = useState(false)
+
+  // Pre-filter products client-side when a category is in the URL so the
+  // initial render never flashes the full unfiltered catalogue.
+  const [products, setProducts] = useState<Product[]>(() => {
+    if (!initialCategory) return initialProducts
+    const matchedCat = initialCategories.find((c) => c.slug === initialCategory)
+    if (!matchedCat) return initialProducts
+    return initialProducts.filter(
+      (p) => p.categoryId === matchedCat.id || p.category === matchedCat.name,
+    )
+  })
+  // Start in loading state when category/search filters are active so the
+  // API-fetched products replace the pre-filtered set without a layout jump.
+  const [loading, setLoading] = useState(() => !!(initialCategory || initialSearch))
   const [visibleCount, setVisibleCount] = useState(12)
   const [expandedSections, setExpandedSections] = useState({
     categories: true,
@@ -82,6 +94,11 @@ export default function ShopPageClient({
 
   const parentCategories = categories.filter((c) => !c.parentId)
   const getChildren = (parentId: string) => categories.filter((c) => c.parentId === parentId)
+
+  // Scroll to top on mount to prevent footer-first rendering after navigation
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   useEffect(() => {
     if (!filtersChanged) return
@@ -696,6 +713,7 @@ export default function ShopPageClient({
                           src={product.image}
                           alt={product.name}
                           fill
+                          sizes="(max-width: 640px) 96px, (max-width: 768px) 128px, 160px"
                           className="object-contain p-3 transition-transform duration-700 group-hover:scale-105"
                         />
                       </div>
