@@ -160,7 +160,7 @@ export default async function HomePageServer() {
         },
       }
     })
-    .filter((s): s is HeroSlide => s !== null)
+    .filter((s) => s !== null) as HeroSlide[]
 
   return (
     <HomePage
