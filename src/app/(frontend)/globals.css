@@ -129,12 +129,25 @@ a, button {
   100% { transform: translateX(-50%); }
 }
 @keyframes megaSlideDown {
-  0% { opacity: 0; transform: translateY(-4px); }
+  0% { opacity: 0; transform: translateY(-6px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes megaFadeUp {
-  0% { opacity: 0; transform: translateY(12px); }
+  0% { opacity: 0; transform: translateY(10px); }
   100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes megaColIn {
+  0% { opacity: 0; transform: translateY(14px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes menuCardIn {
+  0%   { opacity: 0; transform: scale(0.96) translateY(18px); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes megaLineGrow {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
 }
 @keyframes loadingBar {
   0%   { width: 0%; opacity: 1; }

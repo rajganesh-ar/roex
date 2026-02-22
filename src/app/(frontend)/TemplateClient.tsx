@@ -7,17 +7,17 @@ export interface MegaMenuColumn {
   id: string
   name: string
   slug: string
-  image: string | null
-  children: Array<{ id: string; name: string; slug: string }>
+  image: string
+  children: { id: string; name: string; slug: string }[]
 }
 
 export interface FeaturedProduct {
   id: string
   name: string
   slug: string
+  image: string
   availability: 'available' | 'unavailable'
   category: string
-  image: string
 }
 
 interface TemplateClientProps {
@@ -39,4 +39,3 @@ export function TemplateClient({
     </div>
   )
 }
-

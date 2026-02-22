@@ -127,6 +127,47 @@ export async function POST() {
       cablesId = existingCats.docs.find((c: any) => c.slug === 'cables')?.id as number
     }
 
+    let componentsId: number | null = null
+    if (!existingSlugs.includes('components')) {
+      const components = await payload.create({
+        collection: 'categories',
+        data: {
+          name: 'Components',
+          slug: 'components',
+          description: 'Amplifiers, DACs, and audio electronics for the discerning audiophile',
+          featured: true,
+        },
+      })
+      componentsId = components.id as number
+    } else {
+      componentsId = existingCats.docs.find((c: any) => c.slug === 'components')?.id as number
+    }
+
+    // Seed Speakers subcategories
+    if (!existingSlugs.includes('cabled-speakers')) {
+      await payload.create({
+        collection: 'categories',
+        data: {
+          name: 'Cabled Speakers',
+          slug: 'cabled-speakers',
+          description: 'Passive and powered wired loudspeakers for home and studio',
+          parent: speakersId!,
+        } as any,
+      })
+    }
+
+    if (!existingSlugs.includes('wireless-smart-speakers')) {
+      await payload.create({
+        collection: 'categories',
+        data: {
+          name: 'Wireless Smart Speakers',
+          slug: 'wireless-smart-speakers',
+          description: 'Wi-Fi and Bluetooth enabled smart speakers with app control',
+          parent: speakersId!,
+        } as any,
+      })
+    }
+
     // ═══════════════════════════════════════════
     // 2. Ensure placeholder media for seeded content
     // ═══════════════════════════════════════════
@@ -403,7 +444,7 @@ export async function POST() {
     return NextResponse.json({
       success: true,
       message: 'Seed completed',
-      categories: { speakersId, cablesId },
+      categories: { speakersId, cablesId, componentsId },
       seededProducts,
       seededPosts,
     })
