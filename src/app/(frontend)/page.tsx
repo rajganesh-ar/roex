@@ -1,7 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import HomePage from './HomePageClient'
-import type { BlogPostData } from './HomePageClient'
+import type { BlogPostData, HeroSlide } from './HomePageClient'
 
 // Force dynamic - DB only reachable at runtime (Railway internal network)
 export const dynamic = 'force-dynamic'
@@ -160,7 +160,7 @@ export default async function HomePageServer() {
         },
       }
     })
-    .filter(Boolean)
+    .filter((s): s is HeroSlide => s !== null)
 
   return (
     <HomePage
