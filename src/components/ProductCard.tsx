@@ -14,15 +14,7 @@ interface ProductCardProps {
   availability?: 'available' | 'unavailable'
 }
 
-export function ProductCard({
-  name,
-  slug,
-  image,
-  category,
-  availability = 'available',
-}: ProductCardProps) {
-  const isAvailable = availability === 'available'
-
+export function ProductCard({ name, slug, image, category }: ProductCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -41,28 +33,12 @@ export function ProductCard({
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
 
-          {/* Availability badge — top left */}
-          <div className="absolute top-3 left-3 z-10">
-            <span
-              className={`text-[9px] uppercase tracking-[0.15em] px-2.5 py-1 font-medium backdrop-blur-sm ${
-                isAvailable ? 'bg-white/85 text-gray-800' : 'bg-black/70 text-amber-300'
-              }`}
-            >
-              {isAvailable ? 'In Stock' : 'Coming Soon'}
-            </span>
-          </div>
-
           {/* Bottom info overlay — always visible, lifts on hover */}
           <div className="absolute bottom-0 inset-x-0 z-10">
             {/* Gradient backdrop */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent transition-opacity duration-500 group-hover:from-black/85" />
             {/* Content */}
             <div className="relative px-4 pb-4 pt-10">
-              {category && (
-                <p className="text-[9px] uppercase tracking-[0.25em] text-white/50 mb-1 font-medium">
-                  {category}
-                </p>
-              )}
               <div className="flex items-end justify-between gap-3">
                 <h3 className="font-montserrat text-[13px] sm:text-[14px] font-normal text-white leading-snug line-clamp-2 flex-1 group-hover:text-white/90 transition-colors duration-300">
                   {name}
@@ -74,9 +50,6 @@ export function ProductCard({
               </div>
             </div>
           </div>
-
-          {/* Unavailable overlay */}
-          {!isAvailable && <div className="absolute inset-0 bg-white/15" />}
         </div>
       </Link>
     </motion.div>

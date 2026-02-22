@@ -200,10 +200,8 @@ export default function HomePage({
   const [loading, setLoading] = useState(!hasInitialData)
   const [testimonialApi, setTestimonialApi] = useState<CarouselApi>()
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
-  const [_statsVisible, setStatsVisible] = useState(false)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const progressRef = useRef<NodeJS.Timeout | null>(null)
-  const statsRef = useRef<HTMLDivElement>(null)
   const SLIDE_DURATION = 6000
 
   const heroSlides = initialHeroSlides && initialHeroSlides.length > 0 ? initialHeroSlides : []
@@ -216,18 +214,6 @@ export default function HomePage({
   const heroParallax = useTransform(scrollY, [0, 800], [0, 80])
   const heroOpacity = useTransform(scrollY, [0, 600], [1, 0.3])
   const fullWidthParallax = useTransform(scrollY, [2500, 4500], [0, 150])
-
-  // Stats counter
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setStatsVisible(true)
-      },
-      { threshold: 0.3 },
-    )
-    if (statsRef.current) observer.observe(statsRef.current)
-    return () => observer.disconnect()
-  }, [])
 
   // Fetch products & categories (skip if server-provided initial data)
   useEffect(() => {
@@ -728,25 +714,10 @@ export default function HomePage({
                           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                           sizes="(max-width: 640px) 85vw, (max-width: 768px) 50vw, (max-width: 1024px) 36vw, 22vw"
                         />
-                        {/* Availability badge */}
-                        <div className="absolute top-3 left-3 z-10">
-                          <span
-                            className={`text-[9px] uppercase tracking-[0.15em] px-2.5 py-1 font-medium backdrop-blur-sm ${
-                              product.availability === 'available'
-                                ? 'bg-white/85 text-gray-800'
-                                : 'bg-black/70 text-amber-300'
-                            }`}
-                          >
-                            {product.availability === 'available' ? 'In Stock' : 'Coming Soon'}
-                          </span>
-                        </div>
                         {/* Bottom overlay with name + arrow */}
                         <div className="absolute bottom-0 inset-x-0 z-10">
                           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent group-hover:from-black/85 transition-all duration-500" />
                           <div className="relative px-4 pb-4 pt-10">
-                            <p className="text-[9px] uppercase tracking-[0.25em] text-white/50 mb-1 font-medium">
-                              {product.category}
-                            </p>
                             <div className="flex items-end justify-between gap-2">
                               <h3 className="font-montserrat text-[13px] font-normal text-white leading-snug flex-1">
                                 {product.name}
@@ -783,51 +754,6 @@ export default function HomePage({
               ))}
             </div>
           )}
-        </div>
-      </section>
-
-      {/* ═══════════════ STATS COUNTER ═══════════════ */}
-      <section ref={statsRef} className="relative overflow-hidden bg-[#0a0a0a] py-14 sm:py-18">
-        {/* Subtle background grid lines */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              'linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)',
-            backgroundSize: '80px 80px',
-          }}
-        />
-        <div className="relative max-w-[1800px] mx-auto px-6 lg:px-12">
-          {/* Label */}
-          <AnimatedSection variant="fade-up" className="mb-12">
-            <div className="flex items-center gap-4">
-              <span className="brand-bar" />
-              <p className="text-[10px] uppercase tracking-[0.5em] text-white/30 font-semibold font-grotesk">
-                ROEX in Numbers
-              </p>
-            </div>
-          </AnimatedSection>
-
-          {/* Stats grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/[0.07]">
-            {stats.map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-                className="px-6 lg:px-10 py-4 first:pl-0"
-              >
-                <div className="font-montserrat text-[48px] sm:text-[60px] lg:text-[72px] font-extralight text-white leading-none tracking-tight mb-3">
-                  {stat.value}
-                </div>
-                <p className="text-[9px] uppercase tracking-[0.3em] text-white/30 font-medium">
-                  {stat.label}
-                </p>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -931,6 +857,51 @@ export default function HomePage({
           </div>
         </section>
       )}
+
+      {/* ═══════════════ STATS COUNTER ═══════════════ */}
+      <section className="relative overflow-hidden bg-[#0a0a0a] py-14 sm:py-18">
+        {/* Subtle background grid lines */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              'linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)',
+            backgroundSize: '80px 80px',
+          }}
+        />
+        <div className="relative max-w-[1800px] mx-auto px-6 lg:px-12">
+          {/* Label */}
+          <AnimatedSection variant="fade-up" className="mb-12">
+            <div className="flex items-center gap-4">
+              <span className="brand-bar" />
+              <p className="text-[10px] uppercase tracking-[0.5em] text-white/30 font-semibold font-grotesk">
+                ROEX in Numbers
+              </p>
+            </div>
+          </AnimatedSection>
+
+          {/* Stats grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/[0.07]">
+            {stats.map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                className="px-6 lg:px-10 py-4 first:pl-0"
+              >
+                <div className="font-montserrat text-[48px] sm:text-[60px] lg:text-[72px] font-extralight text-white leading-none tracking-tight mb-3">
+                  {stat.value}
+                </div>
+                <p className="text-[9px] uppercase tracking-[0.3em] text-white/30 font-medium">
+                  {stat.label}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ═══════════════ TESTIMONIALS ═══════════════ */}
       <section className="pt-20 sm:pt-28 pb-0 bg-[#f5f4f0]">

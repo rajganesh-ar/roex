@@ -140,7 +140,6 @@ export function MegaMenuHeader({ megaMenuColumns, featuredProducts = [] }: MegaM
               height={34}
               priority
               className="h-[28px] w-auto"
-              style={{ filter: 'brightness(0) invert(1)' }}
             />
           </Link>
 
@@ -221,154 +220,175 @@ export function MegaMenuHeader({ megaMenuColumns, featuredProducts = [] }: MegaM
             onMouseEnter={cancelMegaMenuClose}
             onMouseLeave={scheduleMegaMenuClose}
           >
-            <div className="mx-auto max-w-[1800px] px-10 lg:px-16">
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                gap: '1.25rem',
+                maxWidth: '1400px',
+                margin: '0 auto',
+                padding: '2rem',
+              }}
+            >
               {/* ── 4-column row: 3 category images + 1 featured panel ── */}
-              <div className="grid grid-cols-4 gap-8 py-10">
-                {/* ── Category columns ── */}
-                {columns.slice(0, 3).map((col, i) => (
-                  <div
-                    key={col.id}
-                    className="flex flex-col"
-                    style={{
-                      animation: `menuCardIn 0.6s cubic-bezier(0.22,1,0.36,1) ${i * 80}ms both`,
-                    }}
-                    onMouseEnter={() => setActiveCol(col.id)}
-                    onMouseLeave={() => setActiveCol(null)}
-                  >
-                    {/* Portrait image — 3:4 ratio, compact card */}
-                    <Link
-                      href={`/products?category=${col.slug}`}
-                      className="relative block overflow-hidden rounded-lg aspect-[3/4] max-h-[420px]"
-                    >
-                      <Image
-                        src={col.image || '/images/menu-speakers.avif'}
-                        alt={col.name}
-                        fill
-                        sizes="(max-width: 1400px) 20vw, 280px"
-                        loading="eager"
-                        className={`object-cover object-center transition-transform duration-700 ease-out ${
-                          activeCol === col.id ? 'scale-[1.05]' : 'scale-100'
-                        }`}
-                      />
-                      {/* Deep bottom gradient for readable label */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                      {/* Hover overlay */}
-                      <div
-                        className={`absolute inset-0 bg-black/15 transition-opacity duration-300 ${
-                          activeCol === col.id ? 'opacity-100' : 'opacity-0'
-                        }`}
-                      />
-
-                      {/* Category label */}
-                      <div className="absolute bottom-0 left-0 right-0 z-10 px-4 pb-5 pt-12">
-                        <p className="text-[7px] font-grotesk font-medium tracking-[0.35em] uppercase text-white/45 mb-2">
-                          Shop
-                        </p>
-                        <h3 className="text-[18px] font-grotesk font-medium text-white leading-tight tracking-tight">
-                          {col.name}
-                        </h3>
-                      </div>
-
-                      {/* Arrow */}
-                      <div
-                        className={`absolute top-4 right-4 z-10 transition-all duration-300 ${
-                          activeCol === col.id
-                            ? 'opacity-100 translate-x-0'
-                            : 'opacity-0 -translate-x-2'
-                        }`}
-                      >
-                        <ArrowRight className="h-3.5 w-3.5 text-white" />
-                      </div>
-                    </Link>
-
-                    {/* Subcategory links */}
-                    {col.children.length > 0 ? (
-                      <div className="pt-4 pb-2 flex flex-wrap gap-x-5 gap-y-2">
-                        {col.children.map((child) => (
-                          <Link
-                            key={child.id}
-                            href={`/products?category=${child.slug}`}
-                            className="text-[10px] font-grotesk font-medium tracking-[0.14em] uppercase text-white/35 hover:text-white transition-colors duration-150 flex items-center gap-1.5 group/sub"
-                          >
-                            <span className="w-2.5 h-px bg-white/20 group-hover/sub:bg-white/60 transition-colors duration-150 flex-shrink-0" />
-                            {child.name}
-                          </Link>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="pt-4 pb-2">
-                        <Link
-                          href={`/products?category=${col.slug}`}
-                          className="text-[10px] font-grotesk font-medium tracking-[0.14em] uppercase text-white/30 hover:text-white transition-colors duration-150 flex items-center gap-1.5"
-                        >
-                          <span className="w-2.5 h-px bg-white/20 flex-shrink-0" />
-                          View all
-                        </Link>
-                      </div>
-                    )}
-                  </div>
-                ))}
-
-                {/* ── Featured products column ── */}
+              {/* ── Category columns ── */}
+              {columns.slice(0, 3).map((col, i) => (
                 <div
-                  className="flex flex-col pl-6 border-l border-white/[0.08]"
-                  style={{ animation: 'menuCardIn 0.6s cubic-bezier(0.22,1,0.36,1) 240ms both' }}
+                  key={col.id}
+                  className="flex flex-col"
+                  style={{
+                    animation: `menuCardIn 0.6s cubic-bezier(0.22,1,0.36,1) ${i * 80}ms both`,
+                  }}
+                  onMouseEnter={() => setActiveCol(col.id)}
+                  onMouseLeave={() => setActiveCol(null)}
                 >
-                  <div className="pt-4 pb-3 border-b border-white/[0.06]">
-                    <p className="text-[8px] font-grotesk font-semibold tracking-[0.35em] uppercase text-white/30">
-                      Featured
-                    </p>
-                  </div>
+                  {/* Portrait image — 3:4 ratio, compact card */}
+                  <Link
+                    href={`/products?category=${col.slug}`}
+                    style={{
+                      aspectRatio: '3/4',
+                      borderRadius: '0.5rem',
+                      overflow: 'hidden',
+                      position: 'relative',
+                      display: 'block',
+                    }}
+                  >
+                    <Image
+                      src={col.image || '/images/menu-speakers.avif'}
+                      alt={col.name}
+                      fill
+                      sizes="(max-width: 1400px) 20vw, 280px"
+                      loading="eager"
+                      style={{ transition: 'transform 700ms cubic-bezier(0.22,1,0.36,1)' }}
+                      className={`object-cover object-center ${
+                        activeCol === col.id ? 'scale-110' : 'scale-100'
+                      }`}
+                    />
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background:
+                          'linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2), transparent)',
+                      }}
+                    />
+                    {/* Hover overlay */}
+                    <div
+                      style={{ transition: 'opacity 400ms, transform 400ms' }}
+                      className={`absolute inset-0 bg-black/15 ${
+                        activeCol === col.id ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    />
 
-                  <div className="flex-1 flex flex-col divide-y divide-white/[0.05] py-2">
-                    {featuredProducts.length > 0 ? (
-                      featuredProducts.slice(0, 4).map((p) => (
-                        <Link
-                          key={p.id}
-                          href={`/products/${p.slug}`}
-                          className="flex gap-3 items-center py-3 hover:bg-white/[0.04] transition-colors duration-150 group/feat"
-                        >
-                          <div className="relative w-14 h-14 flex-shrink-0 overflow-hidden bg-white/[0.05]">
-                            <Image
-                              src={p.image}
-                              alt={p.name}
-                              fill
-                              sizes="56px"
-                              loading="eager"
-                              className="object-cover"
-                            />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-[12px] font-grotesk font-medium text-white/60 group-hover/feat:text-white transition-colors duration-150 line-clamp-2 leading-snug">
-                              {p.name}
-                            </p>
-                            <p
-                              className={`text-[9px] font-grotesk uppercase tracking-[0.12em] mt-1 ${
-                                p.availability === 'available' ? 'text-white/30' : 'text-white/20'
-                              }`}
-                            >
-                              {p.availability === 'available' ? 'Available' : 'Sold Out'}
-                            </p>
-                          </div>
-                        </Link>
-                      ))
-                    ) : (
-                      <div className="py-3">
-                        <p className="text-[12px] font-grotesk text-white/25">
-                          No featured products
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                    {/* Category label */}
+                    <div className="absolute bottom-0 left-0 right-0 z-10 px-4 pb-5 pt-12">
+                      <p
+                        className="font-grotesk uppercase text-white mb-2"
+                        style={{ fontSize: '10px', letterSpacing: '0.3em', opacity: 0.4 }}
+                      >
+                        Shop
+                      </p>
+                      <h3 className="text-[13px] font-grotesk font-bold text-white tracking-[0.15em] uppercase">
+                        {col.name}
+                      </h3>
+                    </div>
 
-                  <div className="py-4 mt-auto">
-                    <Link
-                      href="/products"
-                      className="flex items-center justify-between w-full px-4 py-2.5 bg-white text-black text-[10px] font-grotesk font-semibold tracking-[0.2em] uppercase hover:bg-white/90 transition-colors duration-150"
+                    {/* Arrow */}
+                    <div
+                      style={{ transition: 'opacity 400ms, transform 400ms' }}
+                      className={`absolute top-4 right-4 z-10 ${
+                        activeCol === col.id
+                          ? 'opacity-100 translate-x-0'
+                          : 'opacity-0 -translate-x-2'
+                      }`}
                     >
-                      All Products <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                  </div>
+                      <ArrowRight className="h-3.5 w-3.5 text-white" />
+                    </div>
+                  </Link>
+
+                  {/* Subcategory links */}
+                  {col.children.length > 0 ? (
+                    <div className="pt-4 pb-2 flex flex-wrap gap-x-5 gap-y-2">
+                      {col.children.map((child) => (
+                        <Link
+                          key={child.id}
+                          href={`/products?category=${child.slug}`}
+                          className="text-[10px] font-grotesk font-medium tracking-[0.14em] uppercase text-white/35 hover:text-white transition-colors duration-150 flex items-center gap-1.5 group/sub"
+                        >
+                          <span className="w-2.5 h-px bg-white/20 group-hover/sub:bg-white/60 transition-colors duration-150 flex-shrink-0" />
+                          {child.name}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="pt-4 pb-2">
+                      <Link
+                        href={`/products?category=${col.slug}`}
+                        className="text-[10px] font-grotesk font-medium tracking-[0.14em] uppercase text-white/30 hover:text-white transition-colors duration-150 flex items-center gap-1.5"
+                      >
+                        <span className="w-2.5 h-px bg-white/20 flex-shrink-0" />
+                        View all
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* ── Featured products column ── */}
+              <div
+                className="flex flex-col pl-6 border-l border-white/[0.08]"
+                style={{ animation: 'menuCardIn 0.6s cubic-bezier(0.22,1,0.36,1) 240ms both' }}
+              >
+                <div className="pt-4 pb-3 border-b border-white/[0.06]">
+                  <p
+                    className="font-grotesk uppercase text-white"
+                    style={{ fontSize: '10px', letterSpacing: '0.3em', opacity: 0.4 }}
+                  >
+                    Featured
+                  </p>
+                </div>
+
+                <div className="flex-1 flex flex-col divide-y divide-white/[0.05] py-2">
+                  {featuredProducts.length > 0 ? (
+                    featuredProducts.slice(0, 4).map((p) => (
+                      <Link
+                        key={p.id}
+                        href={`/products/${p.slug}`}
+                        className="flex gap-3 items-center py-3 hover:bg-white/[0.04] transition-colors duration-150 group/feat"
+                      >
+                        <div className="relative w-14 h-14 flex-shrink-0 overflow-hidden bg-white/[0.05]">
+                          <Image
+                            src={p.image}
+                            alt={p.name}
+                            fill
+                            sizes="56px"
+                            loading="eager"
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-[12px] font-grotesk font-medium text-white/60 group-hover/feat:text-white transition-colors duration-150 line-clamp-2 leading-snug">
+                            {p.name}
+                          </p>
+                          <p className="text-[9px] font-grotesk uppercase tracking-[0.12em] mt-1 text-white/30">
+                            Made in Germany
+                          </p>
+                        </div>
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="py-3">
+                      <p className="text-[12px] font-grotesk text-white/25">No featured products</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="py-4 mt-auto">
+                  <Link
+                    href="/products"
+                    className="flex items-center justify-between w-full px-4 py-2.5 bg-white text-black text-[10px] font-grotesk font-semibold tracking-[0.2em] uppercase hover:bg-white/90 transition-colors duration-150"
+                  >
+                    All Products <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
                 </div>
               </div>
             </div>
@@ -481,7 +501,6 @@ export function MegaMenuHeader({ megaMenuColumns, featuredProducts = [] }: MegaM
                 width={90}
                 height={32}
                 className="h-7 w-auto"
-                style={{ filter: 'brightness(0) invert(1)' }}
               />
             </Link>
             <button

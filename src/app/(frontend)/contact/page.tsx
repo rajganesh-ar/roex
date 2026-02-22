@@ -6,7 +6,6 @@ import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
   Mail,
-  Phone,
   MapPin,
   Send,
   Check,
@@ -60,11 +59,28 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setSubmitted(true)
-    setIsSubmitting(false)
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' })
-    setTimeout(() => setSubmitted(false), 5000)
+    try {
+      const response = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          product: formData.subject || 'General Enquiry',
+        }),
+      })
+      if (response.ok) {
+        setSubmitted(true)
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' })
+        setTimeout(() => setSubmitted(false), 5000)
+      }
+    } catch {
+      // Network error — keep form intact so user can retry
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (
@@ -341,18 +357,6 @@ export default function ContactPage() {
                     <p className="text-[14px] text-gray-900 font-light">support@roexaudios.com</p>
                     <p className="text-[12px] text-gray-400 mt-1 font-light">
                       We respond within 24 hours
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-5 py-7">
-                  <Phone className="h-4 w-4 text-gray-300 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-[10px] uppercase tracking-[0.25em] text-gray-400 mb-2">
-                      Phone
-                    </p>
-                    <p className="text-[14px] text-gray-900 font-light">+971 55 680 3334</p>
-                    <p className="text-[12px] text-gray-400 mt-1 font-light">
-                      Monday – Friday, 9AM – 6PM CET
                     </p>
                   </div>
                 </div>

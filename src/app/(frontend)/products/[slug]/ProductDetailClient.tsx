@@ -52,8 +52,6 @@ export default function ProductDetailClient({
   const [enquiryOpen, setEnquiryOpen] = useState(false)
   const enquiryRef = useRef<HTMLButtonElement>(null)
 
-  const isAvailable = product.availability === 'available'
-
   useEffect(() => {
     const onScroll = () => {
       if (enquiryRef.current) {
@@ -76,7 +74,7 @@ export default function ProductDetailClient({
     <div className="min-h-screen bg-white">
       {/* STICKY BAR */}
       <motion.div
-        initial={false}
+        initial={{ y: -100, opacity: 0 }}
         animate={{ y: showStickyBar ? 0 : -100, opacity: showStickyBar ? 1 : 0 }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-b border-gray-100 shadow-sm"
@@ -95,16 +93,9 @@ export default function ProductDetailClient({
               <p className="font-montserrat text-[13px] font-light text-gray-900 truncate">
                 {product.name}
               </p>
-              <div className="flex items-center gap-1.5">
-                <span
-                  className={`w-1.5 h-1.5 ${isAvailable ? 'bg-emerald-500' : 'bg-amber-400'}`}
-                />
-                <span
-                  className={`text-[10px] uppercase tracking-[0.1em] ${isAvailable ? 'text-emerald-600' : 'text-amber-500'}`}
-                >
-                  {isAvailable ? 'Available' : 'Coming Soon'}
-                </span>
-              </div>
+              <p className="text-[10px] uppercase tracking-[0.1em] text-gray-400">
+                Made in Germany
+              </p>
             </div>
           </div>
           <button
@@ -221,18 +212,6 @@ export default function ProductDetailClient({
                 />
               )}
 
-              <div className="absolute top-4 left-4 z-10">
-                {isAvailable ? (
-                  <span className="bg-[#0a0a0a] text-white px-3 py-1 text-[9px] uppercase tracking-[0.2em] font-medium">
-                    Available
-                  </span>
-                ) : (
-                  <span className="bg-amber-500 text-white px-3 py-1 text-[9px] uppercase tracking-[0.2em] font-medium">
-                    Coming Soon
-                  </span>
-                )}
-              </div>
-
               {product.images.length > 1 && (
                 <div className="absolute bottom-4 right-4 z-10 bg-black/60 backdrop-blur-sm text-white px-2.5 py-1 text-[9px] tracking-[0.1em]">
                   {selectedImage + 1} / {product.images.length}
@@ -297,13 +276,8 @@ export default function ProductDetailClient({
               </div>
 
               <div className="flex items-center gap-2">
-                <span
-                  className={`w-1.5 h-1.5 ${isAvailable ? 'bg-emerald-500' : 'bg-amber-400'}`}
-                />
-                <span
-                  className={`text-[10px] uppercase tracking-[0.2em] font-medium ${isAvailable ? 'text-emerald-600' : 'text-amber-500'}`}
-                >
-                  {isAvailable ? 'Available' : 'Coming Soon'}
+                <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-gray-400">
+                  Made in Germany
                 </span>
               </div>
 
@@ -373,7 +347,7 @@ export default function ProductDetailClient({
                     Origin
                   </span>
                   <span className="text-[12px] text-gray-600 font-light">
-                    Manufactured in the UK
+                    Manufactured in Germany
                   </span>
                 </div>
               </div>

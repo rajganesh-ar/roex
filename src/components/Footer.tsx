@@ -48,14 +48,7 @@ export function Footer() {
         {/* Brand column — spans 2 on large */}
         <div className="lg:col-span-2">
           <Link href="/" className="inline-block mb-8">
-            <Image
-              src="/logo.svg"
-              alt="ROEX"
-              width={88}
-              height={32}
-              className="h-7 w-auto"
-              style={{ filter: 'brightness(0) invert(1)' }}
-            />
+            <Image src="/logo.svg" alt="ROEX" width={88} height={32} className="h-7 w-auto" />
           </Link>
           <p className="text-[12px] font-grotesk text-white/35 leading-relaxed max-w-[280px] mb-8">
             UK-based manufacturer of premium audio systems for retail, hospitality and commercial

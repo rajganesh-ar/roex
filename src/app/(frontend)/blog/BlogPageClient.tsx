@@ -64,7 +64,7 @@ export default function BlogPageClient({ initialPosts }: BlogPageClientProps) {
         />
         <div className="relative max-w-[1800px] mx-auto px-6 lg:px-12">
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
             className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-white/30 mb-6"
@@ -77,7 +77,7 @@ export default function BlogPageClient({ initialPosts }: BlogPageClientProps) {
           </motion.div>
           <div className="max-w-3xl">
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="flex items-center gap-4 mb-6"
@@ -88,7 +88,7 @@ export default function BlogPageClient({ initialPosts }: BlogPageClientProps) {
               </p>
             </motion.div>
             <motion.h1
-              initial={{ opacity: 0, y: 24 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="font-montserrat text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extralight text-white tracking-tight leading-[1.05]"
@@ -98,7 +98,7 @@ export default function BlogPageClient({ initialPosts }: BlogPageClientProps) {
               Insights
             </motion.h1>
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35 }}
               className="mt-6 text-[14px] sm:text-[15px] text-white/35 font-light leading-[1.85] max-w-lg"

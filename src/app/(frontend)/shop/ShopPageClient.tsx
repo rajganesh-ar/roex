@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { ProductCard } from '@/components/ProductCard'
 import { AnimatedSection } from '@/components/AnimatedSection'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
@@ -49,6 +49,7 @@ export default function ShopPageClient({
   initialProducts,
 }: ShopPageClientProps) {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const initialCategory = searchParams.get('category') || ''
   const initialSearch = searchParams.get('search') || ''
   const initialSort = searchParams.get('sortBy') || 'featured'
@@ -357,7 +358,7 @@ export default function ShopPageClient({
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/25" />
         <div className="relative z-10 max-w-[1800px] mx-auto w-full px-6 lg:px-12 pb-12 sm:pb-16">
           <motion.nav
-            initial={{ opacity: 0, y: 10 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-white/40 mb-5"
@@ -371,7 +372,7 @@ export default function ShopPageClient({
             </span>
           </motion.nav>
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
@@ -393,7 +394,7 @@ export default function ShopPageClient({
               </div>
               <span className="w-px h-3 bg-white/20" />
               <span className="text-[10px] text-white/40 uppercase tracking-[0.2em]">
-                Manufactured in the UK
+                Manufactured in Germany
               </span>
             </div>
           </motion.div>
@@ -686,9 +687,9 @@ export default function ShopPageClient({
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: index * 0.04 }}
                   >
-                    <Link
-                      href={`/products/${product.slug}`}
-                      className="group flex gap-6 sm:gap-8 py-6 border-b border-gray-100 first:border-t"
+                    <div
+                      onClick={() => router.push(`/products/${product.slug}`)}
+                      className="group flex gap-6 sm:gap-8 py-6 border-b border-gray-100 first:border-t cursor-pointer"
                     >
                       <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-[#f5f4f0] shrink-0 overflow-hidden">
                         <Image
@@ -697,34 +698,11 @@ export default function ShopPageClient({
                           fill
                           className="object-contain p-3 transition-transform duration-700 group-hover:scale-105"
                         />
-                        {product.availability === 'unavailable' && (
-                          <div className="absolute top-2 left-2">
-                            <span className="bg-[#0a0a0a] text-white px-2 py-0.5 text-[9px] uppercase tracking-[0.1em] font-medium">
-                              Coming Soon
-                            </span>
-                          </div>
-                        )}
                       </div>
                       <div className="flex-1 flex flex-col justify-center min-w-0">
-                        <p className="text-[10px] uppercase tracking-[0.25em] text-gray-400 mb-1.5">
-                          {product.category}
-                        </p>
                         <h3 className="font-montserrat text-base sm:text-lg md:text-xl font-light text-gray-900 group-hover:text-gray-500 transition-colors">
                           {product.name}
                         </h3>
-                        <div className="flex items-center gap-2 mt-2">
-                          {product.availability === 'available' ? (
-                            <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-emerald-600">
-                              <span className="w-1.5 h-1.5 bg-emerald-500" />
-                              Available
-                            </span>
-                          ) : (
-                            <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-gray-400">
-                              <span className="w-1.5 h-1.5 bg-gray-300" />
-                              Coming Soon
-                            </span>
-                          )}
-                        </div>
                         <Link
                           href={`/contact?product=${encodeURIComponent(product.name)}`}
                           onClick={(e) => e.stopPropagation()}
@@ -736,7 +714,7 @@ export default function ShopPageClient({
                       <div className="hidden sm:flex items-center">
                         <ArrowRight className="h-4 w-4 text-gray-200 group-hover:text-gray-600 transition-colors" />
                       </div>
-                    </Link>
+                    </div>
                   </motion.div>
                 ))}
               </div>
