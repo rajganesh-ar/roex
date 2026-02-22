@@ -41,7 +41,7 @@ const milestones = [
   {
     year: '2017',
     event:
-      'Launch of proprietary 360Â° Sound technology with advanced acoustic distribution principles for commercial environments.',
+      'Launch of proprietary 360° Sound technology with advanced acoustic distribution principles for commercial environments.',
     image: '/images/hero-background-4.avif',
   },
   {

@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, Play, Star, Quote, Volume2, Pause } from 'lucide-react'
+import { ArrowRight, Star, Quote, Volume2 } from 'lucide-react'
 import {
   Carousel,
   CarouselContent,
@@ -168,23 +168,6 @@ function getCategoryImage(name: string, slug?: string | null): string {
   return '/images/category-card-speaker.avif'
 }
 
-/* ─── Animated Counter Hook ─── */
-function useCounter(end: number, duration = 2000, start = false) {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    if (!start) return
-    let startTime: number
-    const step = (timestamp: number) => {
-      if (!startTime) startTime = timestamp
-      const progress = Math.min((timestamp - startTime) / duration, 1)
-      setCount(Math.floor(progress * end))
-      if (progress < 1) requestAnimationFrame(step)
-    }
-    requestAnimationFrame(step)
-  }, [end, duration, start])
-  return count
-}
-
 export interface BlogPostData {
   image: string
   category: string
@@ -217,7 +200,7 @@ export default function HomePage({
   const [loading, setLoading] = useState(!hasInitialData)
   const [testimonialApi, setTestimonialApi] = useState<CarouselApi>()
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
-  const [statsVisible, setStatsVisible] = useState(false)
+  const [_statsVisible, setStatsVisible] = useState(false)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const progressRef = useRef<NodeJS.Timeout | null>(null)
   const statsRef = useRef<HTMLDivElement>(null)

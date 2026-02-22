@@ -72,9 +72,9 @@ export function Footer() {
                 {[
                   { label: 'Contact Us', href: '/contact' },
                   { label: 'Pre-Purchase', href: '/shop' },
-                  { label: 'Shipping Policy', href: '/shipping' },
-                  { label: 'Return Policy', href: '/returns' },
-                  { label: 'Warranty', href: '/warranty' },
+                  { label: 'Shipping Policy', href: '/policies#shipping' },
+                  { label: 'Return Policy', href: '/policies#returns' },
+                  { label: 'Warranty', href: '/policies#warranty' },
                 ].map((link) => (
                   <li key={link.label}>
                     <Link
@@ -175,13 +175,22 @@ export function Footer() {
 
         {/* Legal */}
         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-[10px] text-white/25 uppercase tracking-[0.08em]">
-          <Link href="/privacy" className="hover:text-white/50 transition-colors duration-500">
+          <Link
+            href="/policies#privacy"
+            className="hover:text-white/50 transition-colors duration-500"
+          >
             Privacy Policy
           </Link>
-          <Link href="/terms" className="hover:text-white/50 transition-colors duration-500">
+          <Link
+            href="/policies#terms-of-sale"
+            className="hover:text-white/50 transition-colors duration-500"
+          >
             Terms of Sale
           </Link>
-          <Link href="/terms" className="hover:text-white/50 transition-colors duration-500">
+          <Link
+            href="/policies#terms-of-use"
+            className="hover:text-white/50 transition-colors duration-500"
+          >
             Terms of Use
           </Link>
           <span>&copy; {new Date().getFullYear()} ROEX. All rights reserved.</span>

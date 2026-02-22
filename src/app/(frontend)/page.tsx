@@ -45,16 +45,6 @@ async function getHomePageData() {
 export default async function HomePageServer() {
   const { productsResult, categoriesResult, blogResult, heroResult } = await getHomePageData()
 
-  // Debug: log raw blog/hero data so we can see what Payload actually returns
-  console.log('[HomePage] blog docs count:', blogResult.docs.length)
-  blogResult.docs.forEach((post: any, i: number) => {
-    console.log(`[HomePage] blog[${i}] FULL:`, JSON.stringify(post, null, 2))
-  })
-  console.log('[HomePage] hero docs count:', heroResult.docs.length)
-  heroResult.docs.forEach((hero: any, i: number) => {
-    console.log(`[HomePage] hero[${i}] FULL:`, JSON.stringify(hero, null, 2))
-  })
-
   // Transform products to match client expected format
   const products = productsResult.docs.map((product: any) => ({
     id: String(product.id),

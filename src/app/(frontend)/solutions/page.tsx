@@ -12,7 +12,6 @@ import {
   Building2,
   Waves,
   Store,
-  Volume2,
 } from 'lucide-react'
 import { AnimatedSection } from '@/components/AnimatedSection'
 

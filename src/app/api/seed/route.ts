@@ -80,6 +80,10 @@ async function ensurePlaceholderMedia(payload: any): Promise<number> {
 }
 
 export async function POST() {
+  if (process.env.NODE_ENV === 'production' && !process.env.SEED_SECRET) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  }
+
   try {
     const payload = await getPayloadClient()
 
