@@ -3,42 +3,40 @@
 import { MegaMenuHeader } from '@/components/MegaMenuHeader'
 import { Footer } from '@/components/Footer'
 
+export interface MegaMenuColumn {
+  id: string
+  name: string
+  slug: string
+  image: string | null
+  children: Array<{ id: string; name: string; slug: string }>
+}
+
+export interface FeaturedProduct {
+  id: string
+  name: string
+  slug: string
+  availability: 'available' | 'unavailable'
+  category: string
+  image: string
+}
+
 interface TemplateClientProps {
   children: React.ReactNode
-  menuItems: any[]
-  categories: Array<{
-    id: string
-    name: string
-    slug: string
-    image: string | null
-    parentId: string | null
-    parentName: string | null
-  }>
-  featuredProducts: Array<{
-    id: string
-    name: string
-    slug: string
-    availability: 'available' | 'unavailable'
-    category: string
-    image: string
-  }>
+  megaMenuColumns: MegaMenuColumn[]
+  featuredProducts: FeaturedProduct[]
 }
 
 export function TemplateClient({
   children,
-  menuItems,
-  categories,
+  megaMenuColumns,
   featuredProducts,
 }: TemplateClientProps) {
   return (
     <div className="flex min-h-screen flex-col">
-      <MegaMenuHeader
-        initialMenuItems={menuItems}
-        initialCategories={categories}
-        initialFeaturedProducts={featuredProducts}
-      />
+      <MegaMenuHeader megaMenuColumns={megaMenuColumns} featuredProducts={featuredProducts} />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>
   )
 }
+

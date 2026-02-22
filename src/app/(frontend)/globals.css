@@ -129,12 +129,17 @@ a, button {
   100% { transform: translateX(-50%); }
 }
 @keyframes megaSlideDown {
-  0% { opacity: 0; transform: translateY(-8px); }
+  0% { opacity: 0; transform: translateY(-4px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes megaFadeUp {
   0% { opacity: 0; transform: translateY(12px); }
   100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes loadingBar {
+  0%   { width: 0%; opacity: 1; }
+  70%  { width: 85%; opacity: 1; }
+  100% { width: 100%; opacity: 0; }
 }
 
 .animate-fade-in-up {
