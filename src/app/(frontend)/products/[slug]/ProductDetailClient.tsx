@@ -315,24 +315,6 @@ export default function ProductDetailClient({
                 Share
               </button>
 
-              <div className="bg-[#f5f4f0] p-5">
-                <div className="grid grid-cols-3 divide-x divide-gray-200">
-                  {[
-                    { icon: Truck, label: 'Free Delivery', sub: '3-5 days' },
-                    { icon: RotateCcw, label: '30-Day Returns', sub: 'Easy refunds' },
-                    { icon: Shield, label: '5-Year Warranty', sub: 'Full coverage' },
-                  ].map((item, i) => (
-                    <div key={i} className="text-center px-3">
-                      <item.icon className="h-4 w-4 mx-auto text-gray-600 mb-2" strokeWidth={1.5} />
-                      <p className="text-[9px] uppercase tracking-[0.15em] text-gray-700 font-medium">
-                        {item.label}
-                      </p>
-                      <p className="text-[9px] text-gray-400 mt-0.5">{item.sub}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
               <div className="space-y-2">
                 {product.sku && (
                   <div className="flex items-center gap-4">
