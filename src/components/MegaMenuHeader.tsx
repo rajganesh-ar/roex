@@ -23,17 +23,17 @@ const FALLBACK_COLUMNS: MegaMenuColumn[] = [
     ],
   },
   {
-    id: 'components',
-    name: 'Components',
-    slug: 'components',
-    image: '/images/menu-components.avif',
-    children: [],
-  },
-  {
     id: 'cables',
     name: 'Cables',
     slug: 'cables',
     image: '/images/menu-cables.avif',
+    children: [],
+  },
+  {
+    id: 'components',
+    name: 'Components',
+    slug: 'components',
+    image: '/images/menu-components.avif',
     children: [],
   },
 ]

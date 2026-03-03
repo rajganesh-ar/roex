@@ -35,12 +35,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Static assets
+# Static assets (includes public/images used by both Next.js and Payload)
 COPY --from=builder /app/public ./public
-
-# Media files (served by Payload)
-COPY --from=builder /app/media ./media
-RUN chown -R nextjs:nodejs ./media
 
 # Prerender cache
 RUN mkdir .next

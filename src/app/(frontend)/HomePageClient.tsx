@@ -606,7 +606,7 @@ export default function HomePage({
             <AnimatedSection variant="fade-right" delay={0.2}>
               <div className="relative aspect-video bg-black overflow-hidden shadow-xl">
                 <video
-                  src="/videos/roex-360.mp4"
+                  src="/api/video/Roex-360.mp4"
                   autoPlay
                   muted
                   loop

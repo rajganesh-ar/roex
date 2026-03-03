@@ -51,6 +51,8 @@ const CATEGORY_IMAGES: Record<string, string> = {
   cables: '/images/menu-cables.avif',
 }
 
+const MENU_ORDER = ['speakers', 'cables', 'components']
+
 const FALLBACK_COLUMNS: MegaMenuColumn[] = [
   {
     id: 'speakers',
@@ -67,17 +69,17 @@ const FALLBACK_COLUMNS: MegaMenuColumn[] = [
     ],
   },
   {
-    id: 'components',
-    name: 'Components',
-    slug: 'components',
-    image: '/images/menu-components.avif',
-    children: [],
-  },
-  {
     id: 'cables',
     name: 'Cables',
     slug: 'cables',
     image: '/images/menu-cables.avif',
+    children: [],
+  },
+  {
+    id: 'components',
+    name: 'Components',
+    slug: 'components',
+    image: '/images/menu-components.avif',
     children: [],
   },
 ]
@@ -155,6 +157,13 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         slug: child.slug as string,
       })),
     }
+  })
+
+  // Enforce Speakers → Cables → Components order
+  megaMenuColumns.sort((a, b) => {
+    const ai = MENU_ORDER.indexOf(a.slug)
+    const bi = MENU_ORDER.indexOf(b.slug)
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi)
   })
 
   if (megaMenuColumns.length === 0) {
