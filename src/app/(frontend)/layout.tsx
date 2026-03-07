@@ -10,7 +10,8 @@ import type { MegaMenuColumn, FeaturedProduct } from './TemplateClient'
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
-  display: 'swap',
+  display: 'optional',
+  preload: false,
 })
 
 const montserrat = Montserrat({
@@ -22,7 +23,7 @@ const montserrat = Montserrat({
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-space-grotesk',
-  display: 'swap',
+  display: 'optional',
   weight: ['400', '500', '600'],
 })
 

@@ -89,7 +89,6 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                 className="object-cover object-center"
                 priority
                 fetchPriority={i === 0 ? 'high' : 'auto'}
-                quality={60}
                 sizes="100vw"
               />
             )}

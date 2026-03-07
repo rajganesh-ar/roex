@@ -13,6 +13,8 @@ const nextConfig = {
     remotePatterns: [],
     // Use modern formats for smaller file sizes
     formats: ['image/avif', 'image/webp'],
+    // Lower quality reduces file size with minimal visible difference
+    quality: 60,
     // Standardized device sizes for consistent responsive images
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
