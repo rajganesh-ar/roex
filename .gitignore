@@ -50,8 +50,8 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 
-# Large video files (deploy to server directly)
-/public/videos/
+# Large video files excluded from git (use Git LFS or upload manually)
+# /public/videos/
 
 # Temp claude files
 tmpclaude-*

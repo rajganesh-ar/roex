@@ -725,7 +725,7 @@ export default function HomePage({
                 <button
                   key={i}
                   onClick={() => testimonialApi?.scrollTo(i)}
-                  className="py-3 px-1 flex items-center"
+                  className="py-3 px-2 flex items-center min-w-[24px] min-h-[24px]"
                   aria-label={`Testimonial ${i + 1}`}
                 >
                   <span
@@ -757,7 +757,7 @@ export default function HomePage({
                     </p>
                     <div className="mt-6 pt-5 border-t border-gray-100">
                       <p className="text-[12px] font-medium text-gray-900">{t.author}</p>
-                      <p className="text-[11px] text-gray-400 font-light mt-0.5">{t.role}</p>
+                      <p className="text-[11px] text-gray-500 font-light mt-0.5">{t.role}</p>
                     </div>
                   </div>
                 </CarouselItem>
