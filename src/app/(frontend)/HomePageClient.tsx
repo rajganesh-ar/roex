@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
@@ -38,49 +38,6 @@ interface Category {
   description?: string
   image?: string
 }
-
-export interface HeroSlide {
-  image: string
-  video?: string | null
-  mediaType?: 'image' | 'video'
-  title: string
-  subtitle: string
-  cta: { label: string; href: string }
-}
-
-/* ─── Hero Slides — populated from CMS (hero-sections collection) ─── */
-
-/* ─── Testimonials ─── */
-const defaultTestimonials = [
-  {
-    quote:
-      'The music lured me in. Even though I was actually on my way home. The sound quality made the entire shopping experience feel premium.',
-    author: 'Laura Becker',
-    role: 'Boutique Owner, Munich',
-    rating: 5,
-  },
-  {
-    quote:
-      "We installed ROEX speakers across our hotel lobby, spa and restaurant. Guests constantly comment on the atmosphere — it's become our signature.",
-    author: 'Marco Benedetti',
-    role: 'General Manager, Grand Hotel Tyrol',
-    rating: 5,
-  },
-  {
-    quote:
-      'After switching to ROEX 360° Sound, we noticed customers staying longer and spending more. The system paid for itself within months.',
-    author: 'Sophie Kramer',
-    role: 'Retail Operations Director',
-    rating: 5,
-  },
-  {
-    quote:
-      "The compatible third-party control app makes managing sound across all our zones effortless. One app, complete control — it's been a game-changer for our restaurant group.",
-    author: 'David Park',
-    role: 'Restaurant Group CEO',
-    rating: 5,
-  },
-]
 
 /* ─── Stats ─── */
 const defaultStats = [
@@ -168,6 +125,38 @@ function getCategoryImage(name: string, slug?: string | null): string {
   return '/images/category-card-speaker.avif'
 }
 
+/* ─── Testimonials ─── */
+const defaultTestimonials = [
+  {
+    quote:
+      'The music lured me in. Even though I was actually on my way home. The sound quality made the entire shopping experience feel premium.',
+    author: 'Laura Becker',
+    role: 'Boutique Owner, Munich',
+    rating: 5,
+  },
+  {
+    quote:
+      "We installed ROEX speakers across our hotel lobby, spa and restaurant. Guests constantly comment on the atmosphere — it's become our signature.",
+    author: 'Marco Benedetti',
+    role: 'General Manager, Grand Hotel Tyrol',
+    rating: 5,
+  },
+  {
+    quote:
+      'After switching to ROEX 360° Sound, we noticed customers staying longer and spending more. The system paid for itself within months.',
+    author: 'Sophie Kramer',
+    role: 'Retail Operations Director',
+    rating: 5,
+  },
+  {
+    quote:
+      "The compatible third-party control app makes managing sound across all our zones effortless. One app, complete control — it's been a game-changer for our restaurant group.",
+    author: 'David Park',
+    role: 'Restaurant Group CEO',
+    rating: 5,
+  },
+]
+
 export interface BlogPostData {
   image: string
   category: string
@@ -182,37 +171,27 @@ export interface HomePageProps {
   initialProducts?: Product[]
   initialCategories?: Category[]
   initialBlogPosts?: BlogPostData[]
-  initialHeroSlides?: HeroSlide[]
 }
 
 export default function HomePage({
   initialProducts,
   initialCategories,
   initialBlogPosts,
-  initialHeroSlides,
 }: HomePageProps) {
   const hasInitialData = !!(initialProducts || initialCategories || initialBlogPosts)
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [slideProgress, setSlideProgress] = useState(0)
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>(initialProducts || [])
   const [categories, setCategories] = useState<Category[]>(initialCategories || [])
   const [blogPosts, setBlogPosts] = useState<BlogPostData[]>(initialBlogPosts || [])
   const [loading, setLoading] = useState(!hasInitialData)
   const [testimonialApi, setTestimonialApi] = useState<CarouselApi>()
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
-  const progressRef = useRef<NodeJS.Timeout | null>(null)
-  const SLIDE_DURATION = 6000
 
-  const heroSlides = initialHeroSlides && initialHeroSlides.length > 0 ? initialHeroSlides : []
   const testimonials = defaultTestimonials
   const stats = defaultStats
   const inspirationItems = defaultInspirationItems
 
-  // Parallax scroll
+  // Parallax scroll (used by full-width image section)
   const { scrollY } = useScroll()
-  const heroParallax = useTransform(scrollY, [0, 800], [0, 80])
-  const heroOpacity = useTransform(scrollY, [0, 600], [1, 0.3])
   const fullWidthParallax = useTransform(scrollY, [2500, 4500], [0, 150])
 
   // Fetch products & categories (skip if server-provided initial data)
@@ -258,22 +237,6 @@ export default function HomePage({
       .finally(() => setLoading(false))
   }, [])
 
-  // Hero auto-advance with progress
-  useEffect(() => {
-    if (heroSlides.length === 0) return
-    setSlideProgress(0)
-    progressRef.current = setInterval(() => {
-      setSlideProgress((prev) => Math.min(prev + 100 / (SLIDE_DURATION / 50), 100))
-    }, 50)
-    intervalRef.current = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-    }, SLIDE_DURATION)
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-      if (progressRef.current) clearInterval(progressRef.current)
-    }
-  }, [currentSlide, heroSlides.length])
-
   // Testimonial carousel tracking
   useEffect(() => {
     if (!testimonialApi) return
@@ -283,14 +246,6 @@ export default function HomePage({
       testimonialApi.off('select', onSelect)
     }
   }, [testimonialApi])
-
-  const goToSlide = (index: number) => {
-    if (intervalRef.current) clearInterval(intervalRef.current)
-    if (progressRef.current) clearInterval(progressRef.current)
-    setCurrentSlide(index)
-  }
-
-  const slide = heroSlides[currentSlide]
 
   const categoryCards =
     categories.length > 0
@@ -304,163 +259,6 @@ export default function HomePage({
 
   return (
     <div className="bg-white overflow-hidden">
-      {/* ═══════════════ HERO CAROUSEL ═══════════════ */}
-      {heroSlides.length > 0 && (
-        <section className="relative h-screen overflow-hidden">
-          {/* All slides are always in the DOM so their images preload immediately */}
-          {heroSlides.map((s, i) => (
-            <motion.div
-              key={i}
-              animate={{
-                opacity: i === currentSlide ? 1 : 0,
-                scale: i === currentSlide ? 1.05 : 1.15,
-              }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-0"
-              style={{ zIndex: i === currentSlide ? 1 : 0 }}
-            >
-              <motion.div
-                style={{ y: heroParallax }}
-                className="absolute inset-0 flex items-center justify-center"
-              >
-                {s.mediaType === 'video' && s.video ? (
-                  <video
-                    src={s.video}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    className="absolute inset-0 w-full h-full object-cover object-center bg-black"
-                  />
-                ) : (
-                  <Image
-                    src={s.image}
-                    alt={s.title}
-                    fill
-                    className="object-cover object-center"
-                    priority
-                    fetchPriority={i === 0 ? 'high' : 'auto'}
-                    sizes="100vw"
-                  />
-                )}
-              </motion.div>
-            </motion.div>
-          ))}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/80" />
-
-          <motion.div
-            style={{ opacity: heroOpacity }}
-            className="relative z-10 h-full flex flex-col justify-end pb-14 sm:pb-18 md:pb-24 lg:pb-28"
-          >
-            <div className="max-w-[1800px] mx-auto w-full px-6 lg:px-12">
-              <div className="max-w-4xl">
-                {/* Eyebrow line */}
-                <motion.div
-                  key={`eyebrow-${currentSlide}`}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex items-center gap-3 mb-4"
-                >
-                  <span className="w-8 h-px bg-white/50" />
-                  <span className="text-[10px] uppercase tracking-[0.35em] text-white/70 font-light">
-                    {String(currentSlide + 1).padStart(2, '0')} &mdash; Premium Audio
-                  </span>
-                </motion.div>
-
-                <motion.h1
-                  key={currentSlide}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                  className="font-montserrat text-[2.2rem] sm:text-[2.8rem] md:text-5xl lg:text-6xl font-light text-white leading-[1.05] tracking-[-0.02em] whitespace-pre-line mb-4"
-                >
-                  {slide.title}
-                </motion.h1>
-
-                <motion.div
-                  key={`divider-${currentSlide}`}
-                  initial={{ scaleX: 0, originX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                  className="w-16 h-px bg-white/40 mb-4"
-                />
-
-                <motion.p
-                  key={`sub-${currentSlide}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-[13px] sm:text-[15px] text-white/85 font-light max-w-lg leading-[1.9] tracking-wide mb-7"
-                >
-                  {slide.subtitle}
-                </motion.p>
-
-                <motion.div
-                  key={`cta-${currentSlide}`}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex items-center gap-6"
-                >
-                  <Link
-                    href={slide.cta.href}
-                    className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.25em] text-white border-b border-white/50 pb-1 hover:border-white transition-colors duration-300 group"
-                  >
-                    {slide.cta.label}
-                    <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform duration-300" />
-                  </Link>
-                </motion.div>
-              </div>
-            </div>
-
-            {/* Slide indicators with progress */}
-            <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-3">
-              {heroSlides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => goToSlide(i)}
-                  className="relative h-[2px] overflow-hidden"
-                  style={{ width: i === currentSlide ? '48px' : '24px' }}
-                  aria-label={`Slide ${i + 1}`}
-                >
-                  <div className="absolute inset-0 bg-white/30" />
-                  {i === currentSlide && (
-                    <motion.div
-                      className="absolute inset-y-0 left-0 bg-brand-gradient-horizontal"
-                      initial={{ width: '0%' }}
-                      animate={{ width: `${slideProgress}%` }}
-                      transition={{ duration: 0.05, ease: 'linear' }}
-                    />
-                  )}
-                  {i < currentSlide && <div className="absolute inset-0 bg-white" />}
-                </button>
-              ))}
-            </div>
-
-            {/* Slide counter — hidden since it's now in the eyebrow */}
-          </motion.div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="absolute bottom-6 left-6 lg:left-10 hidden md:flex flex-col items-center gap-2"
-          >
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-              className="w-[1px] h-8 bg-gradient-to-b from-transparent to-white/60"
-            />
-            <span className="text-[9px] uppercase tracking-[0.3em] text-white/40 rotate-90 origin-center translate-y-6">
-              Scroll
-            </span>
-          </motion.div>
-        </section>
-      )}
-
       {/* ═══════════════ THE ROEX ADVANTAGE ═══════════════ */}
       <section className="relative overflow-hidden bg-black">
         <div className="w-full flex flex-col lg:flex-row">
@@ -606,12 +404,12 @@ export default function HomePage({
             <AnimatedSection variant="fade-right" delay={0.2}>
               <div className="relative aspect-video bg-black overflow-hidden shadow-xl">
                 <video
-                  src="/api/video/Roex-360.mp4"
+                  src="/videos/Roex-360.mp4"
                   autoPlay
                   muted
                   loop
                   playsInline
-                  preload="auto"
+                  preload="metadata"
                   className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 />
               </div>
@@ -740,7 +538,7 @@ export default function HomePage({
 
               {/* Nav arrows */}
               <div className="flex items-center mt-8">
-                <span className="text-[10px] uppercase tracking-[0.3em] text-gray-400 mr-auto">
+                <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mr-auto">
                   Drag to explore
                 </span>
                 <div className="flex items-center gap-2">
@@ -849,7 +647,7 @@ export default function HomePage({
 
               {/* Nav arrows */}
               <div className="flex items-center mt-8">
-                <span className="text-[10px] uppercase tracking-[0.3em] text-gray-400 mr-auto">
+                <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mr-auto">
                   Drag to explore
                 </span>
                 <div className="flex items-center gap-2">
@@ -887,12 +685,10 @@ export default function HomePage({
           {/* Stats grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/[0.07]">
             {stats.map((stat, i) => (
-              <motion.div
+              <AnimatedSection
                 key={i}
-                initial={{ opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                variant="fade-up"
+                delay={i * 0.12}
                 className="px-6 lg:px-10 py-4 first:pl-0"
               >
                 <div className="font-montserrat text-[48px] sm:text-[60px] lg:text-[72px] font-extralight text-white leading-none tracking-tight mb-3">
@@ -901,7 +697,7 @@ export default function HomePage({
                 <p className="text-[9px] uppercase tracking-[0.3em] text-white/30 font-medium">
                   {stat.label}
                 </p>
-              </motion.div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
@@ -929,9 +725,13 @@ export default function HomePage({
                 <button
                   key={i}
                   onClick={() => testimonialApi?.scrollTo(i)}
-                  className={`h-1.5 transition-all duration-500 ${currentTestimonial === i ? 'bg-stone-800 w-6' : 'bg-stone-300 w-1.5 rounded-full'}`}
+                  className="py-3 px-1 flex items-center"
                   aria-label={`Testimonial ${i + 1}`}
-                />
+                >
+                  <span
+                    className={`block h-1.5 transition-all duration-500 ${currentTestimonial === i ? 'bg-stone-800 w-6' : 'bg-stone-300 w-1.5 rounded-full'}`}
+                  />
+                </button>
               ))}
             </div>
           </div>
@@ -1040,13 +840,7 @@ export default function HomePage({
             {/* Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {blogPosts.map((post, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
-                >
+                <AnimatedSection key={i} variant="fade-up" delay={i * 0.08}>
                   <Link href={`/blog/${post.slug}`} className="group block">
                     {/* Image */}
                     <div className="relative aspect-[16/10] bg-[#f2f2f0] overflow-hidden mb-5">
@@ -1085,7 +879,7 @@ export default function HomePage({
                       Read More <ArrowRight className="h-3 w-3" />
                     </span>
                   </Link>
-                </motion.div>
+                </AnimatedSection>
               ))}
             </div>
           </div>

@@ -364,7 +364,7 @@ export default function ShopPageClient({
       >
         <motion.div style={{ y: heroParallax }} className="absolute inset-0">
           <Image
-            src="/images/cable-hero.avif"
+            src="/images/hero-background-1.avif"
             alt="ROEX Products"
             fill
             className="object-cover scale-110"

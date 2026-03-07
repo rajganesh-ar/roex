@@ -84,7 +84,10 @@ export function Footer() {
                 placeholder="Your email address"
                 className="flex-1 bg-transparent border border-white/[0.12] px-4 py-3 text-[12px] font-grotesk text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors duration-300"
               />
-              <button className="px-4 border border-l-0 border-white/[0.12] text-white/30 hover:text-white hover:bg-white/[0.05] transition-all duration-300">
+              <button
+                aria-label="Subscribe to newsletter"
+                className="px-4 border border-l-0 border-white/[0.12] text-white/30 hover:text-white hover:bg-white/[0.05] transition-all duration-300"
+              >
                 <ArrowRight className="h-3.5 w-3.5" />
               </button>
             </div>
@@ -93,9 +96,9 @@ export function Footer() {
 
         {/* Shop */}
         <div>
-          <h4 className="text-[9px] font-grotesk font-semibold tracking-[0.3em] uppercase text-white/30 mb-6">
+          <p className="text-[9px] font-grotesk font-semibold tracking-[0.3em] uppercase text-white/30 mb-6">
             Shop
-          </h4>
+          </p>
           <ul className="space-y-3">
             {SHOP_LINKS.map((link) => (
               <li key={link.label}>
@@ -112,9 +115,9 @@ export function Footer() {
 
         {/* Support */}
         <div>
-          <h4 className="text-[9px] font-grotesk font-semibold tracking-[0.3em] uppercase text-white/30 mb-6">
+          <p className="text-[9px] font-grotesk font-semibold tracking-[0.3em] uppercase text-white/30 mb-6">
             Support
-          </h4>
+          </p>
           <ul className="space-y-3">
             {SUPPORT_LINKS.map((link) => (
               <li key={link.label}>
@@ -131,9 +134,9 @@ export function Footer() {
 
         {/* Company */}
         <div>
-          <h4 className="text-[9px] font-grotesk font-semibold tracking-[0.3em] uppercase text-white/30 mb-6">
+          <p className="text-[9px] font-grotesk font-semibold tracking-[0.3em] uppercase text-white/30 mb-6">
             Company
-          </h4>
+          </p>
           <ul className="space-y-3">
             {COMPANY_LINKS.map((link) => (
               <li key={link.label}>

@@ -1,37 +1,85 @@
 import { Suspense } from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import HomePage from './HomePageClient'
-import type { BlogPostData, HeroSlide } from './HomePageClient'
+import nextDynamic from 'next/dynamic'
+import HeroCarousel from './HeroCarousel'
+import type { HeroSlide } from './HeroCarousel'
+import type { BlogPostData } from './HomePageClient'
+
+// Lazy-load the heavy below-fold component into a separate JS chunk (reduces initial TBT)
+const HomePage = nextDynamic(() => import('./HomePageClient'), { ssr: true })
 
 // Force dynamic - DB only reachable at runtime (Railway internal network)
 export const dynamic = 'force-dynamic'
 
-// Skeleton shown immediately while CMS queries run — mirrors the dark full-screen hero
-function HomePageSkeleton() {
-  return (
-    <div className="min-h-screen bg-[#111] flex items-end pb-24 sm:pb-28 md:pb-32">
-      <div className="max-w-[1800px] mx-auto w-full px-6 lg:px-12">
-        <div className="max-w-4xl space-y-4">
-          {/* Eyebrow */}
-          <div className="h-2.5 w-28 bg-white/15 rounded animate-pulse" />
-          {/* Headline line 1 */}
-          <div className="h-10 sm:h-14 md:h-16 w-3/4 bg-white/15 rounded animate-pulse" />
-          {/* Headline line 2 */}
-          <div className="h-10 sm:h-14 md:h-16 w-1/2 bg-white/15 rounded animate-pulse" />
-          {/* Subtitle */}
-          <div className="h-3 w-72 bg-white/10 rounded animate-pulse mt-2" />
-          {/* CTA */}
-          <div className="h-10 w-36 bg-white/10 rounded animate-pulse mt-6" />
-        </div>
-      </div>
-    </div>
-  )
+// Hero skeleton: shown only until hero-sections query resolves (usually <200ms)
+function HeroSkeleton() {
+  return <div className="h-screen bg-[#111]" />
 }
 
-async function getHomePageData() {
+// Resolve a Payload media object to a URL
+function resolveMedia(media: any): string | null {
+  if (!media || typeof media !== 'object') return null
+  if (media.filename) return `/api/media/file/${media.filename}`
+  if (media.url) return media.url
+  return null
+}
+
+// Transform raw hero docs to HeroSlide[]
+function transformHeroSlides(docs: any[]): HeroSlide[] {
+  return docs
+    .filter((hero: any) => {
+      if (hero.mediaType === 'image' && hero.backgroundImage) return true
+      if (hero.mediaType === 'video' && (hero.backgroundVideo || hero.backgroundVideoUrl))
+        return true
+      return false
+    })
+    .map((hero: any) => {
+      let image: string | null = null
+      let video: string | null = null
+      if (hero.mediaType === 'image') {
+        image = resolveMedia(hero.backgroundImage)
+      } else if (hero.mediaType === 'video') {
+        video = hero.backgroundVideo
+          ? resolveMedia(hero.backgroundVideo)
+          : hero.backgroundVideoUrl || null
+      }
+      if (!image && !video) return null
+      return {
+        image: image || '',
+        video,
+        mediaType: (hero.mediaType as 'image' | 'video') || 'image',
+        title: hero.title || '',
+        subtitle: hero.subtitle || '',
+        cta: {
+          label: hero.ctaButtons?.[0]?.label || 'DISCOVER MORE',
+          href: hero.ctaButtons?.[0]?.link || '/shop',
+        },
+      }
+    })
+    .filter((s) => s !== null) as HeroSlide[]
+}
+
+// ── Fast path: only fetches hero-sections (single query, typically <200ms) ──
+async function HeroData() {
   const payload = await getPayload({ config })
-  const [productsResult, categoriesResult, blogResult, heroResult] = await Promise.all([
+  const heroResult = await payload
+    .find({
+      collection: 'hero-sections',
+      where: { active: { equals: true } },
+      sort: 'order',
+      depth: 2,
+      limit: 10,
+    })
+    .catch(() => ({ docs: [] as any[] }))
+  const heroSlides = transformHeroSlides(heroResult.docs)
+  return <HeroCarousel slides={heroSlides} />
+}
+
+// ── Slow path: products + categories + blog (can take 1–3s) ──
+async function BelowFoldData() {
+  const payload = await getPayload({ config })
+  const [productsResult, categoriesResult, blogResult] = await Promise.all([
     payload
       .find({ collection: 'products', sort: '-featured', limit: 8, depth: 1 })
       .catch(() => ({ docs: [] as any[] })),
@@ -52,21 +100,7 @@ async function getHomePageData() {
         depth: 2,
       })
       .catch(() => ({ docs: [] as any[] })),
-    payload
-      .find({
-        collection: 'hero-sections',
-        where: { active: { equals: true } },
-        sort: 'order',
-        depth: 2,
-        limit: 10,
-      })
-      .catch(() => ({ docs: [] as any[] })),
   ])
-  return { productsResult, categoriesResult, blogResult, heroResult }
-}
-
-async function HomePageData() {
-  const { productsResult, categoriesResult, blogResult, heroResult } = await getHomePageData()
 
   // Transform products to match client expected format
   const products = productsResult.docs.map((product: any) => ({
@@ -127,69 +161,27 @@ async function HomePageData() {
     }
   })
 
-  // Transform hero sections
-  const heroSlides = heroResult.docs
-    .filter((hero: any) => {
-      if (hero.mediaType === 'image' && hero.backgroundImage) return true
-      if (hero.mediaType === 'video' && (hero.backgroundVideo || hero.backgroundVideoUrl))
-        return true
-      return false
-    })
-    .map((hero: any) => {
-      let image: string | null = null
-      let video: string | null = null
-
-      // Prefer filename-based path over absolute url
-      const resolveMedia = (media: any): string | null => {
-        if (!media || typeof media !== 'object') return null
-        if (media.filename) return `/api/media/file/${media.filename}`
-        if (media.url) return media.url
-        return null
-      }
-
-      if (hero.mediaType === 'image') {
-        image = resolveMedia(hero.backgroundImage)
-      } else if (hero.mediaType === 'video') {
-        if (hero.backgroundVideo) {
-          video = resolveMedia(hero.backgroundVideo)
-        } else if (hero.backgroundVideoUrl) {
-          video = hero.backgroundVideoUrl
-        }
-        // Don't set image for video slides — avoids poster flash
-      }
-
-      // Skip if we couldn't resolve any media
-      if (!image && !video) return null
-
-      return {
-        image: image || '',
-        video,
-        mediaType: (hero.mediaType as 'image' | 'video') || 'image',
-        title: hero.title || '',
-        subtitle: hero.subtitle || '',
-        cta: {
-          label: hero.ctaButtons?.[0]?.label || 'DISCOVER MORE',
-          href: hero.ctaButtons?.[0]?.link || '/shop',
-        },
-      }
-    })
-    .filter((s) => s !== null) as HeroSlide[]
-
   return (
     <HomePage
       initialProducts={products}
       initialCategories={categories}
       initialBlogPosts={blogPosts}
-      initialHeroSlides={heroSlides.length > 0 ? heroSlides : undefined}
     />
   )
 }
 
-// Outer wrapper renders immediately, streams HomePageData in
+// ── Page root: hero streams in fast, below-fold streams in independently ──
 export default function HomePageServer() {
   return (
-    <Suspense fallback={<HomePageSkeleton />}>
-      <HomePageData />
-    </Suspense>
+    <>
+      {/* Hero renders as soon as hero-sections query completes — unblocked from products/blog */}
+      <Suspense fallback={<HeroSkeleton />}>
+        <HeroData />
+      </Suspense>
+      {/* Below-fold loads independently; fallback reserves layout space */}
+      <Suspense fallback={<div className="min-h-screen bg-white" />}>
+        <BelowFoldData />
+      </Suspense>
+    </>
   )
 }

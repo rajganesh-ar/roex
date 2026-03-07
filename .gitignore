@@ -28,6 +28,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# temp agent files
+tmpclaude-*
+
 # local env files
 .env*.local
 

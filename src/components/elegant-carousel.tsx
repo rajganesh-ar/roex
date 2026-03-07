@@ -95,7 +95,7 @@ export default function ElegantCarousel({ items, autoPlayInterval = 5000 }: Eleg
             >
               <div className="flex items-center gap-3 mb-5">
                 <span className="w-8 h-px bg-gray-300" />
-                <span className="text-[11px] text-gray-400">
+                <span className="text-[11px] text-gray-600">
                   {String(currentIndex + 1).padStart(2, '0')} /{' '}
                   {String(items.length).padStart(2, '0')}
                 </span>
@@ -105,7 +105,7 @@ export default function ElegantCarousel({ items, autoPlayInterval = 5000 }: Eleg
                 {slide.title}
               </h3>
 
-              <p className="text-[15px] text-gray-500 font-light leading-[2] max-w-lg">
+              <p className="text-[15px] text-gray-600 font-light leading-[2] max-w-lg">
                 {slide.subtitle}
               </p>
             </div>
@@ -170,7 +170,7 @@ export default function ElegantCarousel({ items, autoPlayInterval = 5000 }: Eleg
                 }}
               />
             </div>
-            <p className="text-[10px] text-gray-500 truncate">{item.title}</p>
+            <p className="text-[10px] text-gray-700 truncate">{item.title}</p>
           </button>
         ))}
       </div>
