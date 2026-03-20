@@ -81,7 +81,7 @@ export default function ProductDetailClient({
       >
         <div className="max-w-[1800px] mx-auto px-6 lg:px-12 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4 min-w-0">
-            <div className="relative w-9 h-9 bg-[#f5f4f0] shrink-0 overflow-hidden">
+            <div className="relative w-9 h-9 bg-[#f2f2f0] shrink-0 overflow-hidden">
               <Image
                 src={product.images[0]}
                 alt={product.name}
@@ -176,7 +176,7 @@ export default function ProductDetailClient({
             className="space-y-4"
           >
             <div
-              className="relative aspect-square bg-[#f5f4f0] overflow-hidden cursor-crosshair"
+              className="relative aspect-[4/3] bg-[#f2f2f0] overflow-hidden cursor-crosshair"
               onMouseEnter={() => setShowZoom(true)}
               onMouseLeave={() => setShowZoom(false)}
               onMouseMove={handleZoomMove}
@@ -194,7 +194,7 @@ export default function ProductDetailClient({
                     src={product.images[selectedImage]}
                     alt={product.name}
                     fill
-                    className="object-contain p-8"
+                    className="object-cover"
                     priority
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
@@ -225,7 +225,7 @@ export default function ProductDetailClient({
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`relative w-[68px] h-[68px] sm:w-20 sm:h-20 shrink-0 overflow-hidden bg-[#f5f4f0] transition-all duration-300 ${
+                    className={`relative w-[68px] h-[68px] sm:w-20 sm:h-20 shrink-0 overflow-hidden bg-[#f2f2f0] transition-all duration-300 ${
                       selectedImage === index
                         ? 'ring-2 ring-gray-900 ring-offset-1 opacity-100'
                         : 'opacity-40 hover:opacity-70'

@@ -19,7 +19,20 @@ const getShopData = unstable_cache(
         })
         .catch(() => ({ docs: [] as any[] })),
       payload
-        .find({ collection: 'products', sort: '-featured', limit: 50, depth: 1 })
+        .find({
+          collection: 'products',
+          sort: '-featured',
+          limit: 50,
+          depth: 1,
+          select: {
+            name: true,
+            slug: true,
+            categories: true,
+            images: true,
+            availability: true,
+            featured: true,
+          },
+        })
         .catch(() => ({ docs: [] as any[] })),
     ])
     return { categoriesResult, productsResult }

@@ -81,7 +81,13 @@ async function BelowFoldData() {
   const payload = await getPayload({ config })
   const [productsResult, categoriesResult, blogResult] = await Promise.all([
     payload
-      .find({ collection: 'products', sort: '-featured', limit: 8, depth: 1 })
+      .find({
+        collection: 'products',
+        sort: '-featured',
+        limit: 8,
+        depth: 1,
+        select: { name: true, slug: true, availability: true, categories: true, images: true },
+      })
       .catch(() => ({ docs: [] as any[] })),
     payload
       .find({
@@ -97,7 +103,17 @@ async function BelowFoldData() {
         where: { status: { equals: 'published' } },
         sort: '-publishedDate',
         limit: 3,
-        depth: 2,
+        depth: 1,
+        select: {
+          title: true,
+          slug: true,
+          excerpt: true,
+          featuredImage: true,
+          categories: true,
+          publishedDate: true,
+          readTime: true,
+          featured: true,
+        },
       })
       .catch(() => ({ docs: [] as any[] })),
   ])

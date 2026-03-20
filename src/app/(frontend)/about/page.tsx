@@ -163,7 +163,7 @@ export default function AboutPage() {
       {/* MISSION */}
       <section className="py-20 sm:py-28 bg-white">
         <div className="max-w-[1800px] mx-auto px-6 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-14 lg:gap-24 items-center">
+          <div className="grid lg:grid-cols-2 gap-14 lg:gap-24 items-stretch">
             <AnimatedSection variant="fade-right">
               <div className="flex items-center gap-4 mb-5">
                 <div className="w-8 h-px bg-gray-400" />
@@ -200,8 +200,8 @@ export default function AboutPage() {
                 Explore our products <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </AnimatedSection>
-            <AnimatedSection variant="fade-left">
-              <div className="relative aspect-[4/5] overflow-hidden">
+            <AnimatedSection variant="fade-left" className="h-full">
+              <div className="relative h-full min-h-[320px] overflow-hidden">
                 <Image
                   src="/images/about-mission.avif"
                   alt="ROEX speakers on lighting track"

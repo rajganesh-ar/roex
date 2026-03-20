@@ -118,6 +118,7 @@ const getHeaderData = unstable_cache(
             collection: 'categories',
             limit: 100,
             depth: 1,
+            select: { name: true, slug: true, image: true, parent: true, children: true },
           })
           .catch(() => ({ docs: [] as any[] })),
         payload
