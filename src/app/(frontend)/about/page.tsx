@@ -15,7 +15,7 @@ const faqs = [
   },
   {
     q: 'Where are ROEX products manufactured?',
-    a: 'ROEX is a UK-based manufacturer and global supplier of high-end audio speakers, cables, and components, founded in 2015 in Scotland. We maintain the highest standards of precision engineering and quality control across our manufacturing operations.',
+    a: 'ROEX is a Germany-based manufacturer and global supplier of high-end audio speakers, cables, and components, founded in 2015 in Berlin. We maintain the highest standards of precision engineering and quality control across our manufacturing operations.',
   },
   {
     q: 'What industries benefit from 360 Sound systems?',
@@ -35,7 +35,7 @@ const milestones = [
   {
     year: '2015',
     event:
-      'ROEX founded in Scotland, United Kingdom with a vision to manufacture high-end audio speakers that distribute sound evenly over 360 like a fine spray.',
+      'ROEX founded in Berlin, Germany with a vision to manufacture high-end audio speakers that distribute sound evenly over 360 like a fine spray.',
     image: '/images/timeline-1.avif',
   },
   {
@@ -98,8 +98,8 @@ const results = [
   },
   {
     value: '2015',
-    label: 'Founded in Scotland, UK',
-    desc: 'ROEX is a UK-based manufacturer delivering premium audio systems with rigorous quality control for long-term performance.',
+    label: 'Founded in Berlin, Germany',
+    desc: 'ROEX is a Germany-based manufacturer delivering premium audio systems with rigorous quality control for long-term performance.',
   },
 ]
 
@@ -177,12 +177,12 @@ export default function AboutPage() {
               <div className="space-y-5 text-[14px] sm:text-[15px] text-gray-500 font-light leading-[1.85]">
                 <p>
                   We rely on tradition where it has proven itself and break boundaries when they
-                  restrict us. As a pioneer in sound systems, ROEX was founded in 2015 in Scotland
+                  restrict us. As a pioneer in sound systems, ROEX was founded in 2015 in Berlin
                   on the idea of manufacturing a loudspeaker that distributes sound evenly over 360
                   like a fine spray.
                 </p>
                 <p>
-                  ROEX is a UK-based manufacturer and global supplier of high-end audio speakers,
+                  ROEX is a Germany-based manufacturer and global supplier of high-end audio speakers,
                   cables, and components. Every product we design and manufacture reflects our
                   commitment to precision engineering, refined aesthetics, and seamless
                   architectural integration.
@@ -244,7 +244,7 @@ export default function AboutPage() {
             {[
               { value: '50K+', label: 'Installations worldwide' },
               { value: '98%', label: 'Customer satisfaction' },
-              { value: '2015', label: 'Founded in Scotland, UK' },
+              { value: '2015', label: 'Founded in Berlin, Germany' },
               { value: '80+', label: 'Countries served' },
             ].map((stat, i) => (
               <motion.div

@@ -51,7 +51,7 @@ export function Footer() {
             <Image src="/logo.svg" alt="ROEX" width={88} height={32} className="h-7 w-auto" />
           </Link>
           <p className="text-[12px] font-grotesk text-white/35 leading-relaxed max-w-[280px] mb-8">
-            UK-based manufacturer of premium audio systems for retail, hospitality and commercial
+            Germany-based manufacturer of premium audio systems for retail, hospitality and commercial
             environments. Est. 2015.
           </p>
 
@@ -156,7 +156,7 @@ export function Footer() {
             <p className="text-[12px] font-grotesk text-white/30 leading-relaxed">
               ROEX Audio Systems
               <br />
-              Scotland, United Kingdom
+              Berlin, Germany
             </p>
           </div>
         </div>

@@ -29,7 +29,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata = {
   description:
-    'ROEX — UK-based manufacturer of premium 360° audio systems for retail, hospitality & commercial spaces. Founded in 2015.',
+    'ROEX — Germany-based manufacturer of premium 360° audio systems for retail, hospitality & commercial spaces. Founded in 2015.',
   title: 'ROEX | Premium 360° Audio Systems — We Make Your Business Sound',
   metadataBase: new URL('https://roexaudios.com'),
   icons: {

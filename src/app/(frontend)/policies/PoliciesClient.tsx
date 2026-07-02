@@ -24,23 +24,23 @@ const sections = [
     content: [
       {
         heading: 'Delivery Areas',
-        body: 'ROEX ships to over 80 countries worldwide. Standard delivery is available across the United Kingdom, European Union, and international destinations. Some remote or restricted regions may not be eligible for direct shipment; please contact us to confirm availability for your location.',
+        body: 'ROEX ships to over 80 countries worldwide. Standard delivery is available across Germany, the European Union, and international destinations. Some remote or restricted regions may not be eligible for direct shipment; please contact us to confirm availability for your location.',
       },
       {
         heading: 'Processing Times',
-        body: 'All orders placed before 14:00 GMT on a business day are processed the same day. Orders placed after 14:00 GMT or on weekends and bank holidays are processed on the next business day. During peak periods or promotional events, processing may take up to 2 business days.',
+        body: 'All orders placed before 14:00 CET on a business day are processed the same day. Orders placed after 14:00 CET or on weekends and public holidays are processed on the next business day. During peak periods or promotional events, processing may take up to 2 business days.',
       },
       {
         heading: 'Estimated Delivery Times',
-        body: 'UK Standard: 3–5 business days. UK Express (available at checkout): 1–2 business days. Europe: 5–10 business days. International: 7–14 business days. Delivery estimates begin from the date of dispatch, not the date of order. ROEX is not liable for delays caused by customs clearance, carrier disruptions, or force majeure events.',
+        body: 'Germany Standard: 3–5 business days. Germany Express (available at checkout): 1–2 business days. Europe: 5–10 business days. International: 7–14 business days. Delivery estimates begin from the date of dispatch, not the date of order. ROEX is not liable for delays caused by customs clearance, carrier disruptions, or force majeure events.',
       },
       {
         heading: 'Shipping Costs',
-        body: 'Shipping costs are calculated at checkout based on your delivery address, order weight, and selected shipping method. Free standard shipping is offered on UK orders exceeding £500 (net) and EU orders exceeding €750 (net). International shipping rates vary by destination and carrier.',
+        body: 'Shipping costs are calculated at checkout based on your delivery address, order weight, and selected shipping method. Free standard shipping is offered on German orders exceeding €600 (net) and other EU orders exceeding €750 (net). International shipping rates vary by destination and carrier.',
       },
       {
         heading: 'Duties, Taxes & Import Fees',
-        body: 'Orders shipped outside the UK may be subject to import duties, taxes, and customs clearance fees levied by the destination country. These charges are the sole responsibility of the recipient and are not included in the product price or shipping fee. ROEX cannot predict or control these charges.',
+        body: 'Orders shipped outside the European Union may be subject to import duties, taxes, and customs clearance fees levied by the destination country. These charges are the sole responsibility of the recipient and are not included in the product price or shipping fee. ROEX cannot predict or control these charges.',
       },
       {
         heading: 'Order Tracking',
@@ -110,7 +110,7 @@ const sections = [
       },
       {
         heading: 'Statutory Rights',
-        body: 'This warranty gives you specific legal rights. You may also have other rights which vary by jurisdiction. Nothing in this warranty limits or excludes your statutory rights as a consumer under applicable law, including the UK Consumer Rights Act 2015 or equivalent legislation.',
+        body: 'This warranty gives you specific legal rights. You may also have other rights which vary by jurisdiction. Nothing in this warranty limits or excludes your statutory rights as a consumer under applicable law, including the German Civil Code (Bürgerliches Gesetzbuch, BGB) or equivalent legislation.',
       },
     ],
   },
@@ -121,7 +121,7 @@ const sections = [
     content: [
       {
         heading: 'Data Controller',
-        body: 'ROEX Audio Systems Ltd ("ROEX", "we", "us", "our") is the data controller responsible for your personal data. We are committed to protecting and respecting your privacy in accordance with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.',
+        body: 'ROEX Audio Systems GmbH ("ROEX", "we", "us", "our") is the data controller responsible for your personal data. We are committed to protecting and respecting your privacy in accordance with the EU General Data Protection Regulation (GDPR) and the German Federal Data Protection Act (Bundesdatenschutzgesetz, BDSG).',
       },
       {
         heading: 'Data We Collect',
@@ -137,11 +137,11 @@ const sections = [
       },
       {
         heading: 'Data Retention',
-        body: 'We retain personal data for as long as necessary to fulfil the purposes for which it was collected, including for the purposes of satisfying any legal or regulatory requirements. Order and transaction records are retained for 7 years in compliance with UK tax law. Marketing preferences are retained until you withdraw consent.',
+        body: 'We retain personal data for as long as necessary to fulfil the purposes for which it was collected, including for the purposes of satisfying any legal or regulatory requirements. Order and transaction records are retained for 10 years in compliance with German commercial and tax law (HGB / AO). Marketing preferences are retained until you withdraw consent.',
       },
       {
         heading: 'Your Rights',
-        body: 'Under UK GDPR you have the right to: access a copy of your personal data; rectify inaccurate data; request erasure of your data (the "right to be forgotten"); restrict or object to processing; data portability; and withdraw consent at any time. To exercise any of these rights, contact privacy@roexaudios.com. You also have the right to lodge a complaint with the Information Commissioner\'s Office (ICO) at ico.org.uk.',
+        body: 'Under the GDPR you have the right to: access a copy of your personal data; rectify inaccurate data; request erasure of your data (the "right to be forgotten"); restrict or object to processing; data portability; and withdraw consent at any time. To exercise any of these rights, contact privacy@roexaudios.com. You also have the right to lodge a complaint with your competent data protection supervisory authority, such as the Berlin Commissioner for Data Protection and Freedom of Information (Berliner Beauftragte für Datenschutz und Informationsfreiheit).',
       },
       {
         heading: 'Cookies',
@@ -153,7 +153,7 @@ const sections = [
       },
       {
         heading: 'International Transfers',
-        body: 'Where we transfer personal data outside the UK, we ensure appropriate safeguards are in place, such as standard contractual clauses approved by the ICO, to protect your data in accordance with UK GDPR.',
+        body: 'Where we transfer personal data outside the European Economic Area (EEA), we ensure appropriate safeguards are in place, such as standard contractual clauses approved by the European Commission, to protect your data in accordance with the GDPR.',
       },
     ],
   },
@@ -164,11 +164,11 @@ const sections = [
     content: [
       {
         heading: 'Agreement to Terms',
-        body: 'By placing an order with ROEX Audio Systems Ltd, you agree to be bound by these Terms of Sale. These terms apply to all purchases made through our website or via our sales team. Please read them carefully before completing your purchase.',
+        body: 'By placing an order with ROEX Audio Systems GmbH, you agree to be bound by these Terms of Sale. These terms apply to all purchases made through our website or via our sales team. Please read them carefully before completing your purchase.',
       },
       {
         heading: 'Pricing & Currency',
-        body: 'All prices displayed on our website are in Pounds Sterling (GBP) and exclude VAT unless otherwise stated. VAT is applied at the prevailing UK rate and is displayed separately at checkout. ROEX reserves the right to amend prices at any time without prior notice; however, the price at the time of your order will apply to that order.',
+        body: 'All prices displayed on our website are in Euros (EUR) and exclude VAT unless otherwise stated. VAT is applied at the prevailing German rate (currently 19%) and is displayed separately at checkout. ROEX reserves the right to amend prices at any time without prior notice; however, the price at the time of your order will apply to that order.',
       },
       {
         heading: 'Order Acceptance',
@@ -192,7 +192,7 @@ const sections = [
       },
       {
         heading: 'Governing Law',
-        body: 'These Terms of Sale are governed by the laws of Scotland, United Kingdom. Any disputes shall be subject to the exclusive jurisdiction of the Scottish courts, without prejudice to your statutory rights as a consumer.',
+        body: 'These Terms of Sale are governed by the laws of Germany. Any disputes shall be subject to the exclusive jurisdiction of the German courts, without prejudice to your statutory rights as a consumer.',
       },
     ],
   },
@@ -207,7 +207,7 @@ const sections = [
       },
       {
         heading: 'Intellectual Property',
-        body: 'All content on this website — including but not limited to text, graphics, logos, images, audio clips, data compilations, and software — is the property of ROEX Audio Systems Ltd or its content suppliers and is protected by UK and international intellectual property laws. You may not reproduce, distribute, transmit, modify, or create derivative works from any content without our express written permission.',
+        body: 'All content on this website — including but not limited to text, graphics, logos, images, audio clips, data compilations, and software — is the property of ROEX Audio Systems GmbH or its content suppliers and is protected by German and international intellectual property laws. You may not reproduce, distribute, transmit, modify, or create derivative works from any content without our express written permission.',
       },
       {
         heading: 'Permitted Use',
@@ -227,11 +227,11 @@ const sections = [
       },
       {
         heading: 'Limitation of Liability',
-        body: "To the fullest extent permitted by law, ROEX shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of, or inability to use, the website or its content. ROEX's total liability to you for any direct damages shall not exceed £100.",
+        body: "To the fullest extent permitted by law, ROEX shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of, or inability to use, the website or its content. ROEX's total liability to you for any direct damages shall not exceed €100.",
       },
       {
         heading: 'Governing Law',
-        body: 'These Terms of Use are governed by the laws of Scotland, United Kingdom. Any disputes arising in connection with these terms shall be subject to the exclusive jurisdiction of the Scottish courts.',
+        body: 'These Terms of Use are governed by the laws of Germany. Any disputes arising in connection with these terms shall be subject to the exclusive jurisdiction of the German courts.',
       },
     ],
   },

@@ -43,7 +43,7 @@ interface Category {
 const defaultStats = [
   { value: '50K+', label: 'Installations Worldwide' },
   { value: '40%', label: 'Fewer Speakers Needed' },
-  { value: '2015', label: 'Founded in Scotland, UK' },
+  { value: '2015', label: 'Founded in Berlin, Germany' },
   { value: '80+', label: 'Countries Served' },
 ]
 

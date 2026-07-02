@@ -20,7 +20,7 @@ import { AnimatedSection } from '@/components/AnimatedSection'
 const contactFaqs = [
   {
     q: 'How long does shipping take?',
-    a: 'Standard delivery takes 5-10 business days within the UK and Europe. Express delivery options are available at checkout for an additional fee. International orders typically arrive within 7-14 business days.',
+    a: 'Standard delivery takes 5-10 business days within Germany and Europe. Express delivery options are available at checkout for an additional fee. International orders typically arrive within 7-14 business days.',
   },
   {
     q: 'What is your return policy?',
@@ -366,7 +366,7 @@ export default function ContactPage() {
                     <p className="text-[10px] uppercase tracking-[0.25em] text-gray-400 mb-2">
                       Showroom
                     </p>
-                    <p className="text-[14px] text-gray-900 font-light">Scotland, United Kingdom</p>
+                    <p className="text-[14px] text-gray-900 font-light">Berlin, Germany</p>
                     <p className="text-[12px] text-gray-400 mt-1 font-light">By appointment only</p>
                   </div>
                 </div>
