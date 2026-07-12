@@ -3,6 +3,7 @@ import { Inter, Montserrat, Space_Grotesk } from 'next/font/google'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 import { TemplateClient } from './TemplateClient'
 import type { MegaMenuColumn, FeaturedProduct } from './TemplateClient'
@@ -220,6 +221,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         <TemplateClient megaMenuColumns={megaMenuColumns} featuredProducts={featuredProducts}>
           {children}
         </TemplateClient>
+        <SpeedInsights />
       </body>
     </html>
   )
